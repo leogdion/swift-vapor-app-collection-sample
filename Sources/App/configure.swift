@@ -1,6 +1,12 @@
 import FluentPostgreSQL
 import Vapor
 
+public struct PostgresDefaults {
+  public static let hostname = "localhost"
+  public static let username = "app_collection"
+  public static let port = 5432
+}
+
 /// Called before your application initializes.
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
   // Register providers first
@@ -23,7 +29,20 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
   if let url = Environment.get("DATABASE_URL") {
     postgreSQLConfig = PostgreSQLDatabaseConfig(url: url)!
   } else {
-    postgreSQLConfig = PostgreSQLDatabaseConfig(hostname: "localhost", username: "app_collection")
+    let hostname = Environment.get("DATABASE_HOSTNAME") ?? PostgresDefaults.hostname
+    let username = Environment.get("DATABASE_USERNAME") ?? PostgresDefaults.username
+    let database = Environment.get("DATABASE_DATABASE")
+    let password = Environment.get("DATABASE_PASSWORD")
+    
+    let port : Int
+    
+    if let portString = Environment.get("DATABASE_PORT") {
+      port = Int(portString) ?? PostgresDefaults.port
+    } else {
+      port = PostgresDefaults.port
+    }
+    
+    postgreSQLConfig = PostgreSQLDatabaseConfig(hostname: hostname, port: port, username: username, database: database, password: password, transport: .cleartext)
   }
   let postgreSQL = PostgreSQLDatabase(config: postgreSQLConfig)
   
