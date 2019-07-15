@@ -2,25 +2,25 @@ import FluentPostgreSQL
 import Vapor
 
 /// A single entry of a Todo list.
-final class Todo: PostgreSQLModel {
+final class Product: PostgreSQLUUIDModel {
     /// The unique identifier for this `Todo`.
-    var id: Int?
+    var id: UUID?
 
     /// A title describing what this `Todo` entails.
-    var title: String
+    var name: String
 
     /// Creates a new `Todo`.
-    init(id: Int? = nil, title: String) {
+    init(id: Int? = nil, name: String) {
         self.id = id
-        self.title = title
+        self.name = name
     }
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension Todo: Migration { }
+extension Product: Migration { }
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
-extension Todo: Content { }
+extension Product: Content { }
 
 /// Allows `Todo` to be used as a dynamic parameter in route definitions.
-extension Todo: Parameter { }
+extension Product: Parameter { }
