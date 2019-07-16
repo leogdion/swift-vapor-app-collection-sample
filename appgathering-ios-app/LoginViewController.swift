@@ -18,7 +18,6 @@ class LoginViewController: UIViewController {
   }
   
   @IBAction func signupWithButton(_ sender: UIButton, forEvent event: UIEvent) {
-    ®
   }
   
   @IBAction func loginWithButton(_ sender: UIButton, forEvent event: UIEvent) {
