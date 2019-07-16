@@ -7,30 +7,12 @@
 
 import UIKit
 
-struct NoDataError : Error {
-  
-}
-struct AppleSearchResult : Codable {
-  let results : [AppleSearchResultItem]
-}
-struct AppleSearchResultItem : Codable {
-  let artistId : Int
-  let artistName : String
-  let artworkUrl512 : URL
-  let bundleId : String
-  let description : String
-  let minimumOsVersion : String
-  let supportedDevices : [String]
-  let trackId : Int
-  let trackName : String
-  let version : String
-  let sellerName : String
-  let sellerUrl : URL
-  let releaseDate : Date
-}
-class ViewController: UITableViewController, UISearchResultsUpdating {
 
-  weak var alertController : UIAlertController!
+
+class AppStoreSearchResultTableViewController: UITableViewController, UISearchResultsUpdating {
+
+  let reuseIdentifier = "reuseIdentifier"
+  weak var alertController : UIAlertController?
   weak var busyView : UIView!
   var task : URLSessionDataTask?
   var result : Result<[AppleSearchResultItem], Error>? = .success([AppleSearchResultItem]()) {
@@ -42,16 +24,17 @@ class ViewController: UITableViewController, UISearchResultsUpdating {
           self.busyView.isHidden = false
           break
         case .some(.failure(let error)):
-          self.alertController.dismiss(animated: true, completion: nil)
+          self.alertController?.dismiss(animated: true, completion: nil)
           let alertController = UIAlertController(title: "Error Occured", message: error.localizedDescription, preferredStyle: .alert)
           self.alertController = alertController
           self.present(alertController, animated: true, completion: nil)
         case .some(.success):
-          self.busyView.isHidden = false
-          self.alertController.dismiss(animated: true) {
+          self.busyView.isHidden = true
+          self.alertController?.dismiss(animated: true) {
             self.alertController = nil
           }
         }
+        self.tableView.reloadData()
       }
     }
   }
@@ -73,12 +56,15 @@ class ViewController: UITableViewController, UISearchResultsUpdating {
     activityIndicatorView.centerXAnchor.constraint(equalTo: busyView.centerXAnchor).isActive = true
     activityIndicatorView.centerYAnchor.constraint(equalTo: busyView.centerYAnchor).isActive = true
     self.view.addSubview(busyView)
+    self.busyView = busyView
     let searchController = UISearchController(searchResultsController: nil)
     searchController.searchResultsUpdater = self
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search App Store"
     navigationItem.searchController = searchController
     definesPresentationContext = true
+    
+    self.tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
   }
 
   func updateSearchResults(for searchController: UISearchController) {
@@ -99,6 +85,7 @@ class ViewController: UITableViewController, UISearchResultsUpdating {
     urlComponents.queryItems?.append(URLQueryItem(name: "term", value: term))
     
     let url = urlComponents.url!
+
     let dataTask = URLSession.shared.dataTask(with: url) { (data, _, error) in
       let result : Result<[AppleSearchResultItem], Error>
       
@@ -115,9 +102,69 @@ class ViewController: UITableViewController, UISearchResultsUpdating {
       
       self.result = result
     }
-    dataTask.resume()
+    
+    DispatchQueue.global().async {
+      dataTask.resume()
+      
+    }
     self.task = dataTask
   }
 
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return (try? self.result?.get())?.count ?? 0
+  }
+  
+  func loadArtwork(fromUrl artworkURL: URL, forCellAtIndexPath indexPath: IndexPath) {
+    DispatchQueue.global().async {
+      guard let searchResultCell = self.tableView.cellForRow(at: indexPath) as? AppStoreSearchResultTableViewCell else {
+        return
+      }
+          guard let data = try? Data(contentsOf: artworkURL) else {
+            return
+          }
+      
+          guard let image = UIImage(data: data) else {
+            return
+          }
+      
+      DispatchQueue.main.async {
+          searchResultCell.artworkView.image = image
+      }
+      
+    }
+
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+    
+    guard let searchResultCell = cell as? AppStoreSearchResultTableViewCell else {
+      return cell
+    }
+    
+    guard let item = (try? self.result?.get())?[indexPath.row] else {
+      return searchResultCell
+    }
+    
+    DispatchQueue.global().async {
+      guard let data = try? Data(contentsOf: item.artworkUrl512) else {
+        return
+      }
+      DispatchQueue.main.async {
+        searchResultCell.artworkView.image = UIImage(data: data)
+      }
+    }
+    //loadArtwork(fromUrl: item.artworkUrl512, forCellAtIndexPath: indexPath)
+
+    searchResultCell.nameLabel.text = item.trackName
+    searchResultCell.subtitleLabel.text = "by \(item.sellerName)"
+    
+    return searchResultCell
+  }
+  
+  
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 90.0
+  }
 }
 
