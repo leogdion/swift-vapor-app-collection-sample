@@ -24,7 +24,9 @@ final class User: PostgreSQLUUIDModel {
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension User: Migration { }
+extension User: Migration {
+  
+}
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
 extension User: Content { }

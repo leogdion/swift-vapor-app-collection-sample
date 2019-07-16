@@ -14,7 +14,7 @@ public func routes(_ router: Router) throws {
   
   let userController = UserController()
   router.post("users", use: userController.create)
-  router.get("users", use: userController.get)
+  //router.get("users", use: userController.get)
   // Example of configuring a controller
   
   //    let todoController = ProductController()

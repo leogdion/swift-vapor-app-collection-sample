@@ -8,7 +8,15 @@ import UIKit
 
 class LoginViewController: UIViewController {
   
+  @IBOutlet weak var urlTextField: UITextField!
   @IBOutlet weak var usernameTextField : UITextField!
+  
+  var urlComponents : URLComponents? {
+    guard let text = urlTextField.text else {
+      return nil
+    }
+    return URLComponents(string: text)
+  }
   @IBOutlet var buttons: [UIButton]!
   
   override func viewDidLoad() {
@@ -18,6 +26,29 @@ class LoginViewController: UIViewController {
   }
   
   @IBAction func signupWithButton(_ sender: UIButton, forEvent event: UIEvent) {
+    guard var urlComponents = self.urlComponents else {
+      return
+    }
+    
+    urlComponents.path = "users"
+    
+    guard let url = urlComponents.url else {
+      return
+    }
+    
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "POST"
+    
+    URLSession.shared.dataTask(with: urlRequest) { (_, _, error) in
+      if let error = error {
+        return
+      }
+      DispatchQueue.main.async {
+        let tabViewController = UITabBarController()
+        tabViewController.setViewControllers([AppStoreSearchResultTableViewController()], animated: false)
+        self.navigationController?.pushViewController(tabViewController, animated: true)
+      }
+    }
   }
   
   @IBAction func loginWithButton(_ sender: UIButton, forEvent event: UIEvent) {
