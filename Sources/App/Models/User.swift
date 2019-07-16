@@ -5,8 +5,8 @@
 //  Created by Leo Dion on 7/15/19.
 //
 
-import Foundation
-
+import Vapor
+import FluentPostgreSQL
 
 /// A single entry of a Todo list.
 final class User: PostgreSQLUUIDModel {
@@ -17,7 +17,7 @@ final class User: PostgreSQLUUIDModel {
   var name: String
   
   /// Creates a new `Todo`.
-  init(id: Int? = nil, name: String) {
+  init(id: UUID? = nil, name: String) {
     self.id = id
     self.name = name
   }

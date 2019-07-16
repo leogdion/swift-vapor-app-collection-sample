@@ -5,7 +5,8 @@
 //  Created by Leo Dion on 7/15/19.
 //
 
-import Foundation
+import Vapor
+import FluentPostgreSQL
 
 final class Platform : PostgreSQLModel {
   var id: Int?
@@ -29,4 +30,3 @@ extension Platform: Content { }
 /// Allows `Todo` to be used as a dynamic parameter in route definitions.
 extension Platform: Parameter { }
 
-}
