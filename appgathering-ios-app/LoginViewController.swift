@@ -9,10 +9,15 @@ import UIKit
 struct UserRequest : Codable {
   let name : String
 }
+struct UserResponse : Codable {
+  let name : String
+  let id : UUID
+}
 class LoginViewController: UIViewController {
   
   @IBOutlet weak var urlTextField: UITextField!
   @IBOutlet weak var usernameTextField : UITextField!
+  let jsonDecoder = JSONDecoder()
   
   var urlComponents : URLComponents? {
     guard let text = urlTextField.text else {
@@ -26,6 +31,15 @@ class LoginViewController: UIViewController {
     super.viewDidLoad()
     
     // Do any additional setup after loading the view.
+    guard let idString = UserDefaults.standard.string(forKey: "userId") else {
+      return
+    }
+    
+    guard let id = UUID(uuidString: idString) else {
+      return
+    }
+    
+    loginWith(idString)
   }
   
   @IBAction func signupWithButton(_ sender: UIButton, forEvent event: UIEvent) {
@@ -53,10 +67,17 @@ class LoginViewController: UIViewController {
     urlRequest.httpMethod = "POST"
     urlRequest.httpBody = body
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let task = URLSession.shared.dataTask(with: urlRequest) { (_, _, error) in
+    let task = URLSession.shared.dataTask(with: urlRequest) { (data, _, error) in
       if let error = error {
         return
       }
+      guard let data = data else {
+        return
+      }
+      guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
+        return
+      }
+      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
       DispatchQueue.main.async {
         let tabViewController = UITabBarController()
         tabViewController.setViewControllers([AppStoreSearchResultTableViewController()], animated: false)
@@ -67,6 +88,47 @@ class LoginViewController: UIViewController {
   }
   
   @IBAction func loginWithButton(_ sender: UIButton, forEvent event: UIEvent) {
+    
+    guard let userName = self.usernameTextField.text else {
+      return
+    }
+    
+    loginWith(userName)
+  }
+  
+  func loginWith(_ userName: String) {
+    guard var urlComponents = self.urlComponents else {
+      return
+    }
+    urlComponents.path = "/users/\(userName)"
+    
+    guard let url = urlComponents.url else {
+      return
+    }
+    
+    
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "GET"
+    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    let task = URLSession.shared.dataTask(with: urlRequest) { (data, _, error) in
+      if let error = error {
+        return
+      }
+      
+      guard let data = data else {
+        return
+      }
+      guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
+        return
+      }
+      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
+      DispatchQueue.main.async {
+        let tabViewController = UITabBarController()
+        tabViewController.setViewControllers([AppStoreSearchResultTableViewController()], animated: false)
+        self.navigationController?.pushViewController(tabViewController, animated: true)
+      }
+    }
+    task.resume()
   }
   
   /*

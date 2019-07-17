@@ -24,8 +24,14 @@ final class User: PostgreSQLUUIDModel {
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension User: Migration {
-  
+extension User: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(User.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.name)
+      builder.unique(on: \.name)
+    }
+  }
 }
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
