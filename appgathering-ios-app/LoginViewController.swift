@@ -6,6 +6,9 @@
 //
 import UIKit
 
+struct UserRequest : Codable {
+  let name : String
+}
 class LoginViewController: UIViewController {
   
   @IBOutlet weak var urlTextField: UITextField!
@@ -30,16 +33,27 @@ class LoginViewController: UIViewController {
       return
     }
     
-    urlComponents.path = "users"
+    guard let userName = self.usernameTextField.text else {
+      return
+    }
+    
+    urlComponents.path = "/users"
     
     guard let url = urlComponents.url else {
       return
     }
     
+    let jsonEncoder = JSONEncoder()
+    
+    guard let body = try? jsonEncoder.encode(UserRequest(name: userName)) else {
+      return
+    }
+    
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "POST"
-    
-    URLSession.shared.dataTask(with: urlRequest) { (_, _, error) in
+    urlRequest.httpBody = body
+    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    let task = URLSession.shared.dataTask(with: urlRequest) { (_, _, error) in
       if let error = error {
         return
       }
@@ -49,6 +63,7 @@ class LoginViewController: UIViewController {
         self.navigationController?.pushViewController(tabViewController, animated: true)
       }
     }
+    task.resume()
   }
   
   @IBAction func loginWithButton(_ sender: UIButton, forEvent event: UIEvent) {

@@ -3,7 +3,7 @@ import Vapor
 
 public struct PostgresDefaults {
   public static let hostname = "localhost"
-  public static let username = "app_collection"
+  public static let username = "app_gathering"
   public static let port = 5432
 }
 
