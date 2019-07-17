@@ -18,6 +18,8 @@ public func routes(_ router: Router) throws {
   router.get("users", String.parameter, use: userController.get)
   // Example of configuring a controller
   
+  let apswProductController = AppleSoftwareProductController()
+  router.post("iTunesProducts", Int.parameter, use: apswProductController.create)
   //    let todoController = ProductController()
   //    router.get("todos", use: todoController.index)
   //    router.post("todos", use: todoController.create)

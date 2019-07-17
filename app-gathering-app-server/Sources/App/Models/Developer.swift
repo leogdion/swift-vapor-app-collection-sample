@@ -14,8 +14,10 @@ final class Developer: PostgreSQLUUIDModel {
   /// A title describing what this `Todo` entails.
   var name: String
   
+  var url: URL?
+  
   /// Creates a new `Todo`.
-  init(id: UUID? = nil, name: String) {
+  init(id: UUID? = nil, name: String, url: URL? = nil) {
     self.id = id
     self.name = name
   }

@@ -10,24 +10,27 @@ import Vapor
 
 
 /// A single entry of a Todo list.
-final class iTunesDeveloper: PostgreSQLUUIDModel {
+final class AppleSoftwareDeveloper: PostgreSQLUUIDModel {
   /// The unique identifier for this `Todo`.
   var id: UUID?
   
   var artistId : Int
   
+  var developerId: UUID
+  
   /// Creates a new `Todo`.
-  init(id: UUID? = nil, artistId: Int) {
+  init(id: UUID? = nil, artistId: Int, developerId: UUID) {
     self.id = id
     self.artistId = artistId
+    self.developerId = developerId
   }
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension iTunesDeveloper: Migration { }
+extension AppleSoftwareDeveloper: Migration { }
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
-extension iTunesDeveloper: Content { }
+extension AppleSoftwareDeveloper: Content { }
 
 /// Allows `Todo` to be used as a dynamic parameter in route definitions.
-extension iTunesDeveloper: Parameter { }
+extension AppleSoftwareDeveloper: Parameter { }

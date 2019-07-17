@@ -9,10 +9,10 @@ final class Product: PostgreSQLUUIDModel {
   /// A title describing what this `Todo` entails.
   var name: String
   
-  var developerID: UUID?
+  var developerID: UUID
   
   /// Creates a new `Todo`.
-  init(id: UUID? = nil, developerID: UUID? = nil, name: String) {
+  init(id: UUID? = nil, developerID: UUID, name: String) {
     self.id = id
     self.developerID = developerID
     self.name = name
