@@ -79,9 +79,7 @@ class LoginViewController: UIViewController {
       }
       UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
       DispatchQueue.main.async {
-        let tabViewController = UITabBarController()
-        tabViewController.setViewControllers([AppStoreSearchResultTableViewController()], animated: false)
-        self.navigationController?.pushViewController(tabViewController, animated: true)
+        self.dismiss(animated: true, completion: nil)
       }
     }
     task.resume()
@@ -123,9 +121,7 @@ class LoginViewController: UIViewController {
       }
       UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
       DispatchQueue.main.async {
-        let tabViewController = UITabBarController()
-        tabViewController.setViewControllers([AppStoreSearchResultTableViewController()], animated: false)
-        self.navigationController?.pushViewController(tabViewController, animated: true)
+        self.dismiss(animated: true, completion: nil)
       }
     }
     task.resume()

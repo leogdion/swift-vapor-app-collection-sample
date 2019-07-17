@@ -14,6 +14,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
   let reuseIdentifier = "reuseIdentifier"
   weak var alertController : UIAlertController?
   weak var busyView : UIView!
+  var firstLogin = true
   var task : URLSessionDataTask?
   var result : Result<[AppleSearchResultItem], Error>? = .success([AppleSearchResultItem]()) {
     didSet {
@@ -65,8 +66,17 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     definesPresentationContext = true
     
     self.tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+    
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    if firstLogin {
+    let loginViewController = LoginViewController()
+    loginViewController.modalPresentationStyle = .fullScreen
+    self.navigationController?.present(loginViewController, animated: animated, completion: {self.firstLogin = false})
+    }
+  }
+  
   func updateSearchResults(for searchController: UISearchController) {
     guard let term = searchController.searchBar.text else {
       result = .success([AppleSearchResultItem]())
