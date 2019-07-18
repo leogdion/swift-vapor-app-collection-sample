@@ -20,6 +20,19 @@ final class ProductPlatform: PostgreSQLUUIDPivot {
   static var rightIDKey: RightIDKey = \.platformId
 
   var id: UUID?
-  var productId: UUID
-  var platformId: Int
+  var productId: Product.ID
+  var platformId: Platform.ID
+}
+
+extension ProductPlatform: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(ProductPlatform.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.productId)
+      builder.field(for: \.platformId)
+      builder.reference(from: \.productId, to: Product.idKey, onDelete: .cascade)
+      builder.reference(from: \.platformId, to: Platform.idKey, onDelete: .cascade)
+      builder.unique(on: \.productId, \.platformId)
+    }
+  }
 }

@@ -54,5 +54,12 @@ public func configure(_: inout Config, _: inout Environment, _ services: inout S
   // Configure migrations
   var migrations = MigrationConfig()
   migrations.add(model: User.self, database: .psql)
+  migrations.add(model: Developer.self, database: .psql)
+  migrations.add(model: Product.self, database: .psql)
+  migrations.add(model: Platform.self, database: .psql)
+  migrations.add(model: ProductPlatform.self, database: .psql)
+  migrations.add(model: UserProduct.self, database: .psql)
+  migrations.add(model: AppleSoftwareDeveloper.self, database: .psql)
+  migrations.add(model: AppleSoftwareProduct.self, database: .psql)
   services.register(migrations)
 }

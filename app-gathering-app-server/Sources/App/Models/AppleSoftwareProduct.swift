@@ -15,7 +15,7 @@ final class AppleSoftwareProduct: PostgreSQLUUIDModel {
 
   var trackId: Int
 
-  var productId: UUID
+  var productId: Product.ID
 
   var bundleId: String
   /// Creates a new `Todo`.
@@ -28,7 +28,20 @@ final class AppleSoftwareProduct: PostgreSQLUUIDModel {
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension AppleSoftwareProduct: Migration {}
+extension AppleSoftwareProduct: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(AppleSoftwareProduct.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.trackId)
+      builder.field(for: \.productId)
+      builder.field(for: \.bundleId)
+      builder.unique(on: \.trackId)
+      builder.unique(on: \.productId)
+      builder.unique(on: \.bundleId)
+      builder.reference(from: \.productId, to: Product.idKey, onDelete: .cascade)
+    }
+  }
+}
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
 extension AppleSoftwareProduct: Content {}

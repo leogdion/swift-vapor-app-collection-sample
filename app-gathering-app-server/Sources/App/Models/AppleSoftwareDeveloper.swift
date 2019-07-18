@@ -15,7 +15,7 @@ final class AppleSoftwareDeveloper: PostgreSQLUUIDModel {
 
   var artistId: Int
 
-  var developerId: UUID
+  var developerId: Developer.ID
 
   /// Creates a new `Todo`.
   init(id: UUID? = nil, artistId: Int, developerId: UUID) {
@@ -26,7 +26,18 @@ final class AppleSoftwareDeveloper: PostgreSQLUUIDModel {
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension AppleSoftwareDeveloper: Migration {}
+extension AppleSoftwareDeveloper: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(AppleSoftwareDeveloper.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.artistId)
+      builder.field(for: \.developerId)
+      builder.unique(on: \.artistId)
+      builder.unique(on: \.developerId)
+      builder.reference(from: \.developerId, to: Developer.idKey, onDelete: .cascade)
+    }
+  }
+}
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
 extension AppleSoftwareDeveloper: Content {}

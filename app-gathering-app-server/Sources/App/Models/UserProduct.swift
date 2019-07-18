@@ -18,6 +18,19 @@ final class UserProduct: PostgreSQLUUIDPivot {
   static var rightIDKey: RightIDKey = \.productId
 
   var id: UUID?
-  var userId: UUID
-  var productId: UUID
+  var userId: User.ID
+  var productId: Product.ID
+}
+
+extension UserProduct: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(UserProduct.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.userId)
+      builder.field(for: \.productId)
+      builder.reference(from: \.productId, to: Product.idKey, onDelete: .cascade)
+      builder.reference(from: \.userId, to: User.idKey, onDelete: .cascade)
+      builder.unique(on: \.productId, \.userId)
+    }
+  }
 }

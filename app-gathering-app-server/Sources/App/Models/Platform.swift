@@ -22,7 +22,15 @@ final class Platform: PostgreSQLModel {
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension Platform: Migration {}
+extension Platform: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(Platform.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.name)
+      builder.unique(on: \.name)
+    }
+  }
+}
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
 extension Platform: Content {}

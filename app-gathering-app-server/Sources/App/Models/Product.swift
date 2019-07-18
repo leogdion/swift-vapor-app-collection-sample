@@ -20,7 +20,17 @@ final class Product: PostgreSQLUUIDModel {
 }
 
 /// Allows `Todo` to be used as a dynamic migration.
-extension Product: Migration {}
+extension Product: PostgreSQLMigration {
+  static func prepare(on connection: PostgreSQLConnection) -> EventLoopFuture<Void> {
+    return PostgreSQLDatabase.create(Product.self, on: connection) { builder in
+      builder.field(for: \.id, isIdentifier: true)
+      builder.field(for: \.name)
+      builder.field(for: \.developerId)
+      builder.unique(on: \.name)
+      builder.reference(from: \.developerId, to: Developer.idKey, onDelete: .cascade)
+    }
+  }
+}
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
 extension Product: Content {}

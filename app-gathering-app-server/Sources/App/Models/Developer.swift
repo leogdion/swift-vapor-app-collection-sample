@@ -29,6 +29,7 @@ extension Developer: PostgreSQLMigration {
     return PostgreSQLDatabase.create(Developer.self, on: connection) { builder in
       builder.field(for: \.id, isIdentifier: true)
       builder.field(for: \.name)
+      builder.field(for: \.url)
       builder.unique(on: \.name)
     }
   }
