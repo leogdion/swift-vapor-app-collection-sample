@@ -34,15 +34,62 @@ final class AppleSoftwareProductController {
       response.body.consumeData(on: req)
     }.map { data in
       try self.jsonDecoder.decode(AppleSearchResult.self, from: data)
-    }.map { (result) -> AppleSoftwareProductResponse in
+    }.flatMap { (result) -> EventLoopFuture<AppleSoftwareProductResponse> in
       guard let resultItem = result.results.first else {
         throw Abort(HTTPStatus.notFound)
       }
 
-      // find exists product
-      AppleSoftwareProduct.query(on: req).filter(\.trackId == iTunesTrackID).first().map { _ in
+      // add platforms if not exist
+      // find existing product
+      let devFuture: EventLoopFuture<(Developer, AppleSoftwareDeveloper)> = AppleSoftwareDeveloper.query(on: req).filter(\.artistId == resultItem.artistId).first().flatMap {
+        foundApswDeveloper in
+        let apswDeveloperFuture: EventLoopFuture<AppleSoftwareDeveloper>
+        let developerFuture: EventLoopFuture<Developer>
+        if let actualApswDeveloper = foundApswDeveloper {
+          apswDeveloperFuture = req.future(actualApswDeveloper)
+          developerFuture = actualApswDeveloper.developer.get(on: req).flatMap { developer in
+            developer.name = resultItem.artistName
+            return developer.save(on: req)
+          }
+        } else {
+          developerFuture = Developer(name: resultItem.artistName, url: resultItem.sellerUrl).save(on: req)
+          apswDeveloperFuture = developerFuture.map { developer in
+            try AppleSoftwareDeveloper(artistId: resultItem.artistId, developerId: developer.requireID())
+          }
+        }
+        return developerFuture.and(apswDeveloperFuture)
       }
-      throw Abort(HTTPStatus.notImplemented)
+
+      return AppleSoftwareProduct.query(on: req).filter(\.trackId == resultItem.trackId).first().and(devFuture).flatMap { result in
+        let foundApswProduct = result.0
+        let developer = result.1.0
+        let apswDeveloper = result.1.1
+        let product: EventLoopFuture<Product>
+        if let actualApswProduct = foundApswProduct {} else {}
+        return req.future(AppleSoftwareProductResponse())
+      }
+      // check apple product exists
+      //  if apple product exists
+      //    check apple developer exists
+      //      if apple developer exists
+      //        update apple developer
+      //        update developer
+      //      if apple developer does not exist
+      //        create developer
+      //        create apple developer
+      //    update apple product
+      //    update product
+      //  if apple product does not exist
+      //    check apple developer exists
+      //      if apple developer exists
+      //        update apple developer
+      //        update developer
+      //      if apple developer does not exist
+      //        create developer
+      //        create apple developer
+      //    create product
+      //    create apple product
+
 //      let foundAppleSWDeveloper = AppleSoftwareDeveloper.query(on: req).filter(\.artistId == resultItem.artistId).first()
 
 //      throw Abort(HTTPStatus.notImplemented)
