@@ -36,3 +36,15 @@ extension ProductPlatform: PostgreSQLMigration {
     }
   }
 }
+
+extension Product {
+  var platforms: Siblings<Product, Platform, ProductPlatform> {
+    return siblings()
+  }
+}
+
+extension Platform {
+  var products: Siblings<Platform, Product, ProductPlatform> {
+    return siblings()
+  }
+}
