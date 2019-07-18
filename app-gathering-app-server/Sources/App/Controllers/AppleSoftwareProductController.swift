@@ -46,7 +46,7 @@ final class AppleSoftwareProductController {
   }()
 
   func create(_ req: Request) throws -> Future<ProductResponse> {
-    let userFuture = try req.content.decode(User.self).map { try $0.requireID() }
+    let userFuture = try req.content.decode(User.self)
     let iTunesTrackID = try req.parameters.next(Int.self)
     var urlComponents = self.urlComponents
     urlComponents.queryItems = [URLQueryItem(name: "id", value: iTunesTrackID.description)]
@@ -140,10 +140,13 @@ final class AppleSoftwareProductController {
           }.flatten(on: req)
           let savingFuture = savingProductPlatforms.map {
             $0.save(on: req)
-          }
+          }.flatten(on: req)
 
-          return savingFuture.flatten(on: req).and(deletingFuture).map {
+          return userFuture.then { user in
+            user.products.attach(product, on: req)
+          }.and(savingFuture).and(deletingFuture).map {
             _ in
+
             let developerResponse: DeveloperResponse
             let productResponse: ProductResponse
             let apswProductInfo: AppleSoftwareProductInfo

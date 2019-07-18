@@ -20,6 +20,12 @@ final class UserProduct: PostgreSQLUUIDPivot {
   var id: UUID?
   var userId: User.ID
   var productId: Product.ID
+
+  init(id: UUID? = nil, userId: User.ID, productId: Product.ID) {
+    self.id = id
+    self.userId = userId
+    self.productId = productId
+  }
 }
 
 extension UserProduct: PostgreSQLMigration {
@@ -32,5 +38,23 @@ extension UserProduct: PostgreSQLMigration {
       builder.reference(from: \.userId, to: User.idKey, onDelete: .cascade)
       builder.unique(on: \.productId, \.userId)
     }
+  }
+}
+
+extension UserProduct: ModifiablePivot {
+  convenience init(_ left: User, _ right: Product) throws {
+    try self.init(userId: left.requireID(), productId: right.requireID())
+  }
+}
+
+extension User {
+  var products: Siblings<User, Product, UserProduct> {
+    return siblings()
+  }
+}
+
+extension Product {
+  var users: Siblings<Product, User, UserProduct> {
+    return siblings()
   }
 }
