@@ -11,11 +11,14 @@ final class Product: PostgreSQLUUIDModel {
 
   var developerId: UUID
 
+  var sourceImageUrl: URL?
+
   /// Creates a new `Todo`.
-  init(id: UUID? = nil, developerId: UUID, name: String) {
+  init(id: UUID? = nil, developerId: UUID, name: String, sourceImageUrl _: URL = nil) {
     self.id = id
     self.developerId = developerId
     self.name = name
+    sourceImageUrl
   }
 }
 

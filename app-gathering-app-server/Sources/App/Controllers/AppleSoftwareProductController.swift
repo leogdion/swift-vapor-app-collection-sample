@@ -64,8 +64,21 @@ final class AppleSoftwareProductController {
         let foundApswProduct = result.0
         let developer = result.1.0
         let apswDeveloper = result.1.1
-        let product: EventLoopFuture<Product>
-        if let actualApswProduct = foundApswProduct {} else {}
+        let productFuture: EventLoopFuture<Product>
+        let apswProductFuture: EventLoopFuture<AppleSoftwareProduct>
+        if let actualApswProduct = foundApswProduct {
+          actualApswProduct.bundleId = resultItem.bundleId
+          apswProductFuture = actualApswProduct.save(on: req)
+          productFuture = actualApswProduct.product.get(on: req).flatMap { product in
+            product.name = resultItem.trackName
+            return product.save(on: req)
+          }
+        } else {
+          productFuture = Product(developerId: try developer.requireID(), name: resultItem.trackName, sourceImageUrl: resultItem.artworkUrl512).save(on: req)
+          apswProductFuture = try productFuture.flatMap { product in
+            try AppleSoftwareProduct(trackId: resultItem.trackId, productId: product.requireID(), bundleId: resultItem.bundleId).save(on: req)
+          } //
+        }
         return req.future(AppleSoftwareProductResponse())
       }
       // check apple product exists
