@@ -6,6 +6,6 @@
 //
 
 import Foundation
-struct AppleSearchResult : Codable {
-  let results : [AppleSearchResultItem]
+struct AppleSearchResult: Codable {
+  let results: [AppleSearchResultItem]
 }

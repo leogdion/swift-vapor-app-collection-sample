@@ -92,6 +92,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B310235022DCF68D00B56685 /* Build configuration list for PBXNativeTarget "appgathering-ios-app" */;
 			buildPhases = (
+				B315055722E08ACD006FC881 /* ShellScript */,
+				B315055422E08962006FC881 /* ShellScript */,
 				B310233B22DCF68900B56685 /* Sources */,
 				B310233C22DCF68900B56685 /* Frameworks */,
 				B310233D22DCF68900B56685 /* Resources */,
@@ -153,6 +155,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B315055422E08962006FC881 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		B315055722E08ACD006FC881 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat appgathering-ios-app\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B310233B22DCF68900B56685 /* Sources */ = {

@@ -5,17 +5,17 @@
 //  Created by Leo Dion on 7/15/19.
 //
 
-import Vapor
 import FluentPostgreSQL
+import Vapor
 
 /// A single entry of a Todo list.
 final class User: PostgreSQLUUIDModel {
   /// The unique identifier for this `Todo`.
   var id: UUID?
-  
+
   /// A title describing what this `Todo` entails.
   var name: String
-  
+
   /// Creates a new `Todo`.
   init(id: UUID? = nil, name: String) {
     self.id = id
@@ -35,7 +35,7 @@ extension User: PostgreSQLMigration {
 }
 
 /// Allows `Todo` to be encoded to and decoded from HTTP messages.
-extension User: Content { }
+extension User: Content {}
 
 /// Allows `Todo` to be used as a dynamic parameter in route definitions.
-extension User: Parameter { }
+extension User: Parameter {}

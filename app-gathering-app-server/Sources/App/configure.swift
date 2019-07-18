@@ -8,24 +8,24 @@ public struct PostgresDefaults {
 }
 
 /// Called before your application initializes.
-public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
+public func configure(_: inout Config, _: inout Environment, _ services: inout Services) throws {
   // Register providers first
   try services.register(FluentPostgreSQLProvider())
-  
+
   // Register routes to the router
   let router = EngineRouter.default()
   try routes(router)
   services.register(router, as: Router.self)
-  
+
   // Register middleware
   var middlewares = MiddlewareConfig() // Create _empty_ middleware config
   // middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
   middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
   services.register(middlewares)
-  
+
   // Configure a SQLite database
-  let postgreSQLConfig : PostgreSQLDatabaseConfig
-  
+  let postgreSQLConfig: PostgreSQLDatabaseConfig
+
   if let url = Environment.get("DATABASE_URL") {
     postgreSQLConfig = PostgreSQLDatabaseConfig(url: url)!
   } else {
@@ -33,24 +33,24 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     let username = Environment.get("DATABASE_USERNAME") ?? PostgresDefaults.username
     let database = Environment.get("DATABASE_DATABASE")
     let password = Environment.get("DATABASE_PASSWORD")
-    
-    let port : Int
-    
+
+    let port: Int
+
     if let portString = Environment.get("DATABASE_PORT") {
       port = Int(portString) ?? PostgresDefaults.port
     } else {
       port = PostgresDefaults.port
     }
-    
+
     postgreSQLConfig = PostgreSQLDatabaseConfig(hostname: hostname, port: port, username: username, database: database, password: password, transport: .cleartext)
   }
   let postgreSQL = PostgreSQLDatabase(config: postgreSQLConfig)
-  
+
   // Register the configured SQLite database to the database config.
   var databases = DatabasesConfig()
   databases.add(database: postgreSQL, as: .psql)
   services.register(databases)
-  
+
   // Configure migrations
   var migrations = MigrationConfig()
   migrations.add(model: User.self, database: .psql)
