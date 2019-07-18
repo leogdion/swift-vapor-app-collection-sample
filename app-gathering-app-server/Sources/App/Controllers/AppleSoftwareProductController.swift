@@ -11,13 +11,13 @@ import Vapor
 struct DeveloperResponse: Content {
   let id: UUID
   let name: String
-  let url: URL?
   let appleSoftware: AppleSoftwareDeveloperInfo?
 }
 
 struct ProductResponse: Content {
   let id: UUID
   let name: String
+  let url: URL?
   let sourceImageUrl: URL?
   let platforms: [String]
   let developer: DeveloperResponse
@@ -118,7 +118,42 @@ final class AppleSoftwareProductController {
           } //
         }
 
-        throw Abort(.notImplemented)
+        let currentProdPlat = productFuture.flatMap { (product: Product) in
+          try product.platforms.pivots(on: req).all()
+        }
+
+        return currentProdPlat.and(platformsFuture).and(productFuture.and(apswProductFuture)).flatMap { result -> EventLoopFuture<ProductResponse> in
+          let currentProductPlatforms = result.0.0
+          let updatingPlatforms = result.0.1
+          let product = result.1.0
+          let apswProduct = result.1.1
+          let deletingProductPlatforms = try currentProductPlatforms.filter { (productPlatform) -> Bool in
+            try !(updatingPlatforms.contains { (try $0.requireID()) == productPlatform.platformId })
+          }
+          let savingProductPlatforms = try updatingPlatforms.filter { (platform) -> Bool in
+            try !(currentProductPlatforms.contains { $0.platformId == (try platform.requireID()) })
+          }.map { platform in
+            try ProductPlatform(productId: product.requireID(), platformId: platform.requireID())
+          }
+          let deletingFuture = deletingProductPlatforms.map { productPlatform in
+            productPlatform.delete(on: req)
+          }.flatten(on: req)
+          let savingFuture = savingProductPlatforms.map {
+            $0.save(on: req)
+          }
+
+          return savingFuture.flatten(on: req).and(deletingFuture).map {
+            _ in
+            let developerResponse: DeveloperResponse
+            let productResponse: ProductResponse
+            let apswProductInfo: AppleSoftwareProductInfo
+            let apswDeveloperInfo: AppleSoftwareDeveloperInfo
+            apswProductInfo = AppleSoftwareProductInfo(trackId: apswProduct.trackId, bundleId: apswProduct.bundleId)
+            apswDeveloperInfo = AppleSoftwareDeveloperInfo(artistId: apswDeveloper.artistId)
+            developerResponse = DeveloperResponse(id: try developer.requireID(), name: developer.name, appleSoftware: apswDeveloperInfo)
+            return try ProductResponse(id: product.requireID(), name: product.name, url: product.url, sourceImageUrl: product.sourceImageUrl, platforms: updatingPlatforms.map { $0.name }, developer: developerResponse, appleSoftware: apswProductInfo)
+          }
+        }
       }
       // check apple product exists
       //  if apple product exists

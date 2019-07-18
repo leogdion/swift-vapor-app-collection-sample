@@ -22,6 +22,12 @@ final class ProductPlatform: PostgreSQLUUIDPivot {
   var id: UUID?
   var productId: Product.ID
   var platformId: Platform.ID
+
+  init(id: UUID? = nil, productId: UUID, platformId: Int) {
+    self.id = id
+    self.productId = productId
+    self.platformId = platformId
+  }
 }
 
 extension ProductPlatform: PostgreSQLMigration {

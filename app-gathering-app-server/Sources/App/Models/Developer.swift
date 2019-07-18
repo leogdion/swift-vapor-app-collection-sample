@@ -14,8 +14,6 @@ final class Developer: PostgreSQLUUIDModel {
   /// A title describing what this `Todo` entails.
   var name: String
 
-  var url: URL?
-
   /// Creates a new `Todo`.
   init(id: UUID? = nil, name: String, url _: URL? = nil) {
     self.id = id
@@ -29,7 +27,6 @@ extension Developer: PostgreSQLMigration {
     return PostgreSQLDatabase.create(Developer.self, on: connection) { builder in
       builder.field(for: \.id, isIdentifier: true)
       builder.field(for: \.name)
-      builder.field(for: \.url)
     }
   }
 }
