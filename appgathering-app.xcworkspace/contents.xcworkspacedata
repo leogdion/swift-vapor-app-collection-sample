@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:app-gathering-app-server">
+      location = "group:../../../../../../../../Users/leo/Documents/Projects/leogdion-vapor/appgathering-app.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:appgathering-app.xcodeproj">
+      location = "container:../../../../../../../../Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/app-gathering-app-server.xcodeproj">
    </FileRef>
 </Workspace>
