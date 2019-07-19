@@ -32,6 +32,7 @@ extension Product: PostgreSQLMigration {
       builder.field(for: \.name)
       builder.field(for: \.developerId)
       builder.field(for: \.url)
+      builder.field(for: \.sourceImageUrl)
       builder.unique(on: \.name)
       builder.reference(from: \.developerId, to: Developer.idKey, onDelete: .cascade)
     }

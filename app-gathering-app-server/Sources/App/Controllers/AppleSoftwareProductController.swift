@@ -8,6 +8,10 @@
 import FluentPostgreSQL
 import Vapor
 
+struct UserRequest: Content {
+  let id: UUID
+}
+
 struct DeveloperResponse: Content {
   let id: UUID
   let name: String
@@ -46,7 +50,8 @@ final class AppleSoftwareProductController {
   }()
 
   func create(_ req: Request) throws -> Future<ProductResponse> {
-    let userFuture = try req.content.decode(User.self)
+    let userFuture = try req.content.decode(UserRequest.self)
+
     let iTunesTrackID = try req.parameters.next(Int.self)
     var urlComponents = self.urlComponents
     urlComponents.queryItems = [URLQueryItem(name: "id", value: iTunesTrackID.description)]
@@ -142,8 +147,8 @@ final class AppleSoftwareProductController {
             $0.save(on: req)
           }.flatten(on: req)
 
-          return userFuture.then { user in
-            user.products.attach(product, on: req)
+          return userFuture.map { userRequest in
+            User.find(userRequest.id, on: req)
           }.and(savingFuture).and(deletingFuture).map {
             _ in
 
