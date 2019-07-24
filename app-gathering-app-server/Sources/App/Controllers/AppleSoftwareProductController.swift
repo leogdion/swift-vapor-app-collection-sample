@@ -38,6 +38,29 @@ struct ProductResponse: Content {
 }
 
 extension ProductResponse {
+  static func future(from product: Product, on connection: DatabaseConnectable) throws -> Future<ProductResponse> {
+    let productId = try product.requireID()
+    let appleSoftwareProductF = try product.appleSoftware.query(on: connection).first()
+    let developerF = product.developer.query(on: connection).first().unwrap(or: Abort(HTTPResponseStatus.internalServerError))
+
+    let platformNamesF = try product.platforms.query(on: connection).all().map { $0.map { $0.name } }
+
+    let appleSoftwareDeveloperF = try developerF.flatMap { try $0.appleSoftware.query(on: connection).first() }
+
+    return developerF.and(appleSoftwareProductF.and(appleSoftwareDeveloperF)).and(platformNamesF).map { components in
+      let ((developer, (appleSoftwareProduct, appleSoftwareDeveloper)), platformNames) = components
+
+      let appleSoftwareDeveloperInfo =
+        appleSoftwareDeveloper.map { AppleSoftwareDeveloperInfo(artistId: $0.artistId) }
+      let appleSoftwareProductInfo = appleSoftwareProduct.map {
+        AppleSoftwareProductInfo(trackId: $0.trackId, bundleId: $0.bundleId)
+      }
+      let developerResponse = try DeveloperResponse(id: developer.requireID(), name: developer.name, appleSoftware: appleSoftwareDeveloperInfo)
+
+      return ProductResponse(id: productId, name: product.name, url: product.url, sourceImageUrl: product.sourceImageUrl, platforms: platformNames, developer: developerResponse, appleSoftware: appleSoftwareProductInfo)
+    }
+  }
+
   static func future(from productPair: Future<(Product, AppleSoftwareProduct)>, withDeveloper developerResponseF: Future<DeveloperResponse>, withPlatforms platformsF: Future<[Platform]>) -> Future<ProductResponse> {
     let platformNamesF = platformsF.map {
       $0.map {
@@ -103,7 +126,7 @@ final class AppleSoftwareProductController {
     }
   }
 
-  func replaceDeveloper(basedOnProduct resultItem: AppleSearchResultItem, on req: DatabaseConnectable) -> Future<(Developer, AppleSoftwareDeveloper)> {
+  func developer(basedOnProduct resultItem: AppleSearchResultItem, on req: DatabaseConnectable) -> Future<(Developer, AppleSoftwareDeveloper)> {
     return AppleSoftwareDeveloper.query(on: req).filter(\.artistId == resultItem.artistId).first().flatMap {
       foundApswDeveloper in
       let apswDeveloperFuture: EventLoopFuture<AppleSoftwareDeveloper>
@@ -146,7 +169,7 @@ final class AppleSoftwareProductController {
     }
   }
 
-  fileprivate func platforms(upsertBasedOn platformsF: EventLoopFuture<[Platform]>, forProduct product: Product, on req: DatabaseConnectable) throws -> EventLoopFuture<[Platform]> {
+  func platforms(upsertBasedOn platformsF: EventLoopFuture<[Platform]>, forProduct product: Product, on req: DatabaseConnectable) throws -> EventLoopFuture<[Platform]> {
     return try product.platforms.pivots(on: req).all()
       .and(platformsF).flatMap {
         platformsPair in
@@ -186,7 +209,7 @@ final class AppleSoftwareProductController {
 
       // add platforms if not exist
       // find existing product
-      let developerFuture = self.replaceDeveloper(basedOnProduct: resultItem, on: req)
+      let developerFuture = self.developer(basedOnProduct: resultItem, on: req)
 
       let productFuture = developerFuture.flatMap { developerPair in
         try self.product(upsertBasedOn: resultItem, withiTunesArtist: developerPair.1, andDeveloper: developerPair.0, on: req)
@@ -206,71 +229,6 @@ final class AppleSoftwareProductController {
           }
       }
       return ProductResponse.future(from: productFuture, withDeveloper: developerResponseF, withPlatforms: platformsFuture)
-
-//      return AppleSoftwareProduct.query(on: req).filter(\.trackId == resultItem.trackId).first().and(developerFuture).flatMap { result in
-//        let foundApswProduct = result.0
-//        let developer = result.1.0
-//        let apswDeveloper = result.1.1
-//        let productFuture: EventLoopFuture<Product>
-//        let apswProductFuture: EventLoopFuture<AppleSoftwareProduct>
-//        if let actualApswProduct = foundApswProduct {
-//          actualApswProduct.bundleId = resultItem.bundleId
-//          apswProductFuture = actualApswProduct.save(on: req)
-//          productFuture = actualApswProduct.product.get(on: req).flatMap { product in
-//            product.name = resultItem.trackName
-//            product.sourceImageUrl = resultItem.artworkUrl512
-//            return product.save(on: req)
-//          }
-//        } else {
-//          productFuture = Product(developerId: try developer.requireID(), name: resultItem.trackName, sourceImageUrl: resultItem.artworkUrl512).save(on: req)
-//          apswProductFuture = productFuture.flatMap { product in
-//            try AppleSoftwareProduct(trackId: resultItem.trackId, productId: product.requireID(), bundleId: resultItem.bundleId).save(on: req)
-//          } //
-//        }
-//
-//        let currentProdPlat = productFuture.flatMap { (product: Product) in
-//          try product.platforms.pivots(on: req).all()
-//        }
-//
-//
-//      }
-      // check apple product exists
-      //  if apple product exists
-      //    check apple developer exists
-      //      if apple developer exists
-      //        update apple developer
-      //        update developer
-      //      if apple developer does not exist
-      //        create developer
-      //        create apple developer
-      //    update apple product
-      //    update product
-      //  if apple product does not exist
-      //    check apple developer exists
-      //      if apple developer exists
-      //        update apple developer
-      //        update developer
-      //      if apple developer does not exist
-      //        create developer
-      //        create apple developer
-      //    create product
-      //    create apple product
-
-//      let foundAppleSWDeveloper = AppleSoftwareDeveloper.query(on: req).filter(\.artistId == resultItem.artistId).first()
-
-//      throw Abort(HTTPStatus.notImplemented)
-//      return AppleSoftwareProductResponse()
-      // if exists... update all info
-      // if not...
-
-      // find existing apple developer
-      // if exists use that for developer
-      // update all info
-      // if not
-      // create a developer
-      // create an apple developer
-      // create a product
-      // create an apple product
     }
   }
 }
