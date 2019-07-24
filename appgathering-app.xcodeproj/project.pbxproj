@@ -19,6 +19,7 @@
 		B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336088E22DD696B00ADEEFF /* NoDataError.swift */; };
 		B342C7F222DF724E00D69A6A /* AppleSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */; };
 		B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */; };
+		B3B9372A22E8D08700FAF6C1 /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		B336088E22DD696B00ADEEFF /* NoDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataError.swift; sourceTree = "<group>"; };
 		B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResult.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResult.swift"; sourceTree = SOURCE_ROOT; };
 		B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResultItem.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResultItem.swift"; sourceTree = SOURCE_ROOT; };
+		B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppsTableViewController.swift; path = "../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/AppsTableViewController.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,19 +54,20 @@
 		B310234022DCF68900B56685 /* appgathering-ios-app */ = {
 			isa = PBXGroup;
 			children = (
+				B310234122DCF68900B56685 /* AppDelegate.swift */,
 				B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */,
 				B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */,
-				B310234122DCF68900B56685 /* AppDelegate.swift */,
-				B310234322DCF68900B56685 /* SceneDelegate.swift */,
-				B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */,
-				B310234A22DCF68D00B56685 /* Assets.xcassets */,
-				B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */,
-				B310234F22DCF68D00B56685 /* Info.plist */,
 				B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */,
 				B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */,
-				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
+				B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */,
+				B310234A22DCF68D00B56685 /* Assets.xcassets */,
+				B310234F22DCF68D00B56685 /* Info.plist */,
+				B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */,
 				B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */,
 				B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */,
+				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
+				B310234322DCF68900B56685 /* SceneDelegate.swift */,
+				B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */,
 			);
 			path = "appgathering-ios-app";
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B342C7F222DF724E00D69A6A /* AppleSearchResult.swift in Sources */,
+				B3B9372A22E8D08700FAF6C1 /* AppsTableViewController.swift in Sources */,
 				B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */,
 				B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */,
 				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,

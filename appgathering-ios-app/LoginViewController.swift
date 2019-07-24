@@ -32,6 +32,11 @@ class LoginViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    print(ProcessInfo.processInfo.environment)
+    if let serverUrl = ProcessInfo.processInfo.environment["DEFAULT_SERVER"].flatMap(URL.init(string:)) {
+      urlTextField.text = serverUrl.absoluteString
+    }
+
     // Do any additional setup after loading the view.
     guard let idString = UserDefaults.standard.string(forKey: "userId") else {
       return

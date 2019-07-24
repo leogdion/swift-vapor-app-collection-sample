@@ -50,6 +50,13 @@
             ReferencedContainer = "container:appgathering-app.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "DEFAULT_SERVER"
+            value = "http://d517c682.ngrok.io"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
