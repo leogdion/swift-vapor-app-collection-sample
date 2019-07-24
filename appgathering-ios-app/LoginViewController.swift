@@ -32,8 +32,7 @@ class LoginViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    print(ProcessInfo.processInfo.environment)
-    if let serverUrl = ProcessInfo.processInfo.environment["DEFAULT_SERVER"].flatMap(URL.init(string:)) {
+    if let serverUrl = ProcessInfo.processInfo.environment["DEFAULT_SERVER"].flatMap(URL.init(string:)) ?? UserDefaults.standard.url(forKey: "baseUrl") {
       urlTextField.text = serverUrl.absoluteString
     }
 
@@ -85,6 +84,7 @@ class LoginViewController: UIViewController {
         return
       }
       UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
+      UserDefaults.standard.set(self.urlComponents?.url, forKey: "baseUrl")
       DispatchQueue.main.async {
         self.dismiss(animated: true, completion: nil)
       }

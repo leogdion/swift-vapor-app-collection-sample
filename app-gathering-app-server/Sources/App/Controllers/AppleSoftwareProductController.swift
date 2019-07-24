@@ -12,12 +12,6 @@ struct UserRequest: Content {
   let id: UUID
 }
 
-struct DeveloperResponse: Content {
-  let id: UUID
-  let name: String
-  let appleSoftware: AppleSoftwareDeveloperInfo?
-}
-
 extension DeveloperResponse {
   static func future(from developerPair: Future<(Developer, AppleSoftwareDeveloper)>) -> Future<DeveloperResponse> {
     return developerPair.map { developer, appleSoftwareDeveloper in
@@ -25,16 +19,6 @@ extension DeveloperResponse {
       return DeveloperResponse(id: try developer.requireID(), name: developer.name, appleSoftware: apswDeveloperInfo)
     }
   }
-}
-
-struct ProductResponse: Content {
-  let id: UUID
-  let name: String
-  let url: URL?
-  let sourceImageUrl: URL?
-  let platforms: [String]
-  let developer: DeveloperResponse
-  let appleSoftware: AppleSoftwareProductInfo?
 }
 
 extension ProductResponse {
@@ -82,16 +66,8 @@ extension ProductResponse {
   }
 }
 
-struct AppleSoftwareProductInfo: Content {
-  let trackId: Int
-  let bundleId: String
-}
 
-struct AppleSoftwareDeveloperInfo: Content {
-  let artistId: Int
-}
 
-class ProductResponseBuilder {}
 
 final class AppleSoftwareProductController {
   let platformController: PlatformController

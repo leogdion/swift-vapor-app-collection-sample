@@ -8,6 +8,7 @@
 import UIKit
 
 class AppsTableViewController: UITableViewController, TabItemable {
+  var loaded = false
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -16,6 +17,12 @@ class AppsTableViewController: UITableViewController, TabItemable {
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem
+  }
+
+  override func viewDidAppear(_: Bool) {
+    guard !loaded else {
+      return
+    }
   }
 
   // MARK: - Table view data source
