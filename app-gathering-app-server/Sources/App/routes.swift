@@ -12,13 +12,14 @@ public func routes(_ router: Router) throws {
     "Hello, world!"
   }
 
+  let platformController = PlatformController()
   let userController = UserController()
   router.post("users", use: userController.create)
 
   router.get("users", String.parameter, use: userController.get)
   // Example of configuring a controller
 
-  let apswProductController = AppleSoftwareProductController()
+  let apswProductController = AppleSoftwareProductController(platformController: platformController)
   router.post("iTunesProducts", Int.parameter, use: apswProductController.create)
   //    let todoController = ProductController()
   //    router.get("todos", use: todoController.index)

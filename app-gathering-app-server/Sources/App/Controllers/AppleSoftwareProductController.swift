@@ -38,6 +38,7 @@ struct AppleSoftwareDeveloperInfo: Content {
 }
 
 final class AppleSoftwareProductController {
+  let platformController: PlatformController
   let urlComponents = URLComponents(string: "https://itunes.apple.com/lookup?")!
   let jsonDecoder: JSONDecoder = {
     let decoder = JSONDecoder()
@@ -49,15 +50,42 @@ final class AppleSoftwareProductController {
     return decoder
   }()
 
+  init(platformController: PlatformController) {
+    self.platformController = platformController
+  }
+
+  func product(lookupByTrackId iTunesTrackID: Int, on worker: Worker) throws -> Future<AppleSearchResultItem?> {
+    var urlComponents = self.urlComponents
+    urlComponents.queryItems = [URLQueryItem(name: "id", value: iTunesTrackID.description)]
+    let futureClient = HTTPClient.connect(hostname: urlComponents.host!, on: worker)
+    let request = HTTPRequest(method: .GET, url: urlComponents.url!)
+    return futureClient.flatMap { client in
+      client.send(request)
+    }.flatMap { (response: HTTPResponse) in
+      response.body.consumeData(on: worker)
+    }.map { data in
+      try self.jsonDecoder.decode(AppleSearchResult.self, from: data)
+    }.map {
+      $0.results.first
+    }
+  }
+
   func create(_ req: Request) throws -> Future<ProductResponse> {
     let userFuture = try req.content.decode(UserRequest.self)
 
     let iTunesTrackID = try req.parameters.next(Int.self)
+    let iTunesProduct = try product(lookupByTrackId: iTunesTrackID, on: req).map { (item) -> AppleSearchResultItem in
+      guard let item = item else {
+        throw Abort(HTTPStatus.notFound)
+      }
+      return item
+    }
+
     var urlComponents = self.urlComponents
     urlComponents.queryItems = [URLQueryItem(name: "id", value: iTunesTrackID.description)]
     let futureClient = HTTPClient.connect(hostname: urlComponents.host!, on: req)
     let request = HTTPRequest(method: .GET, url: urlComponents.url!)
-    return try futureClient.flatMap { client in
+    return futureClient.flatMap { client in
       client.send(request)
     }.flatMap { (response: HTTPResponse) in
       response.body.consumeData(on: req)
