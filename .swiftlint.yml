@@ -1,3 +1,6 @@
+included: 
+  - appgathering-ios-app
+  - app-gathering-app-server/Sources
 cyclomatic_complexity: 12
 file_length: 550
 function_body_length: 80

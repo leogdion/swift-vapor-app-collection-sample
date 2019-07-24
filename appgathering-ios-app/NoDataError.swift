@@ -6,6 +6,4 @@
 //
 
 import Foundation
-struct NoDataError : Error {
-  
-}
+struct NoDataError: Error {}

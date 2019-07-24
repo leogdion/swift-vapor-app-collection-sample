@@ -6,68 +6,70 @@
 //
 import UIKit
 
-struct UserRequest : Codable {
-  let name : String
+struct UserRequest: Codable {
+  let name: String
 }
-struct UserResponse : Codable {
-  let name : String
-  let id : UUID
+
+struct UserResponse: Codable {
+  let name: String
+  let id: UUID
 }
+
 class LoginViewController: UIViewController {
-  
-  @IBOutlet weak var urlTextField: UITextField!
-  @IBOutlet weak var usernameTextField : UITextField!
+  @IBOutlet var urlTextField: UITextField!
+  @IBOutlet var usernameTextField: UITextField!
   let jsonDecoder = JSONDecoder()
-  
-  var urlComponents : URLComponents? {
+
+  var urlComponents: URLComponents? {
     guard let text = urlTextField.text else {
       return nil
     }
     return URLComponents(string: text)
   }
+
   @IBOutlet var buttons: [UIButton]!
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     // Do any additional setup after loading the view.
     guard let idString = UserDefaults.standard.string(forKey: "userId") else {
       return
     }
-    
+
     guard let id = UUID(uuidString: idString) else {
       return
     }
-    
+
     loginWith(idString)
   }
-  
-  @IBAction func signupWithButton(_ sender: UIButton, forEvent event: UIEvent) {
+
+  @IBAction func signupWithButton(_: UIButton, forEvent _: UIEvent) {
     guard var urlComponents = self.urlComponents else {
       return
     }
-    
+
     guard let userName = self.usernameTextField.text else {
       return
     }
-    
+
     urlComponents.path = "/users"
-    
+
     guard let url = urlComponents.url else {
       return
     }
-    
+
     let jsonEncoder = JSONEncoder()
-    
+
     guard let body = try? jsonEncoder.encode(UserRequest(name: userName)) else {
       return
     }
-    
+
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "POST"
     urlRequest.httpBody = body
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let task = URLSession.shared.dataTask(with: urlRequest) { (data, _, error) in
+    let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
       if let error = error {
         return
       }
@@ -84,35 +86,33 @@ class LoginViewController: UIViewController {
     }
     task.resume()
   }
-  
-  @IBAction func loginWithButton(_ sender: UIButton, forEvent event: UIEvent) {
-    
+
+  @IBAction func loginWithButton(_: UIButton, forEvent _: UIEvent) {
     guard let userName = self.usernameTextField.text else {
       return
     }
-    
+
     loginWith(userName)
   }
-  
+
   func loginWith(_ userName: String) {
     guard var urlComponents = self.urlComponents else {
       return
     }
     urlComponents.path = "/users/\(userName)"
-    
+
     guard let url = urlComponents.url else {
       return
     }
-    
-    
+
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "GET"
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let task = URLSession.shared.dataTask(with: urlRequest) { (data, _, error) in
+    let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
       if let error = error {
         return
       }
-      
+
       guard let data = data else {
         return
       }
@@ -126,15 +126,14 @@ class LoginViewController: UIViewController {
     }
     task.resume()
   }
-  
+
   /*
    // MARK: - Navigation
-   
+
    // In a storyboard-based application, you will often want to do a little preparation before navigation
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
    // Get the new view controller using segue.destination.
    // Pass the selected object to the new view controller.
    }
    */
-  
 }
