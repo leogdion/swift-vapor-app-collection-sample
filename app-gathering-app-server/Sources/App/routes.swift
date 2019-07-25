@@ -12,6 +12,7 @@ public func routes(_ router: Router) throws {
     "Hello, world!"
   }
 
+  let productController = ProductController()
   let platformController = PlatformController()
   let userController = UserController()
   router.post("users", use: userController.create)
@@ -21,6 +22,8 @@ public func routes(_ router: Router) throws {
 
   let apswProductController = AppleSoftwareProductController(platformController: platformController)
   router.post("iTunesProducts", Int.parameter, use: apswProductController.create)
+  
+  router.get("products", use: productController.list)
   //    let todoController = ProductController()
   //    router.get("todos", use: todoController.index)
   //    router.post("todos", use: todoController.create)

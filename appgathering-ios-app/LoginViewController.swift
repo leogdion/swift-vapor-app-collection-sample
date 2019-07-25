@@ -6,7 +6,7 @@
 //
 import UIKit
 
-struct UserRequest: Codable {
+struct SignupRequest: Codable {
   let name: String
 }
 
@@ -49,13 +49,19 @@ class LoginViewController: UIViewController {
   }
 
   @IBAction func signupWithButton(_: UIButton, forEvent _: UIEvent) {
-    guard var urlComponents = self.urlComponents else {
+    guard let baseUrlComponents = self.urlComponents else {
       return
     }
 
     guard let userName = self.usernameTextField.text else {
       return
     }
+
+    guard let baseUrl = baseUrlComponents.url else {
+      return
+    }
+
+    var urlComponents = baseUrlComponents
 
     urlComponents.path = "/users"
 
@@ -65,7 +71,7 @@ class LoginViewController: UIViewController {
 
     let jsonEncoder = JSONEncoder()
 
-    guard let body = try? jsonEncoder.encode(UserRequest(name: userName)) else {
+    guard let body = try? jsonEncoder.encode(SignupRequest(name: userName)) else {
       return
     }
 
@@ -83,8 +89,10 @@ class LoginViewController: UIViewController {
       guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
         return
       }
-      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
-      UserDefaults.standard.set(self.urlComponents?.url, forKey: "baseUrl")
+      // RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
+//      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
+//      UserDefaults.standard.set(self.urlComponents?.url, forKey: "baseUrl")
+
       DispatchQueue.main.async {
         self.dismiss(animated: true, completion: nil)
       }
@@ -101,9 +109,13 @@ class LoginViewController: UIViewController {
   }
 
   func loginWith(_ userName: String) {
-    guard var urlComponents = self.urlComponents else {
+    guard let baseUrlComponents = self.urlComponents else {
       return
     }
+    guard let baseUrl = baseUrlComponents.url else {
+      return
+    }
+    var urlComponents = baseUrlComponents
     urlComponents.path = "/users/\(userName)"
 
     guard let url = urlComponents.url else {
@@ -124,7 +136,7 @@ class LoginViewController: UIViewController {
       guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
         return
       }
-      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
+      // RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
       DispatchQueue.main.async {
         self.dismiss(animated: true, completion: nil)
       }

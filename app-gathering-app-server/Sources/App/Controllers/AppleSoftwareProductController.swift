@@ -8,9 +8,6 @@
 import FluentPostgreSQL
 import Vapor
 
-struct UserRequest: Content {
-  let id: UUID
-}
 
 extension DeveloperResponse {
   static func future(from developerPair: Future<(Developer, AppleSoftwareDeveloper)>) -> Future<DeveloperResponse> {

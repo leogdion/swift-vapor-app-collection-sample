@@ -184,6 +184,17 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     return searchResultCell
   }
 
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      return
+    }
+
+//    guard let request =
+//      //RequestBuilder.shared.request(path: "/iTunesProducts/\(searchItem.trackId)", httpMethod: "POST") else {
+//      return
+//    }
+  }
+
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
     return 90.0
   }

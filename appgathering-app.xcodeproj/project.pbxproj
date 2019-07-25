@@ -24,6 +24,7 @@
 		B38F0F7422E90672008E3D0A /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7022E90672008E3D0A /* ProductResponse.swift */; };
 		B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */; };
 		B3B9372A22E8D08700FAF6C1 /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */; };
+		B3F3361622E92EAF007935DB /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F3361522E92EAF007935DB /* UserRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		B38F0F7022E90672008E3D0A /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductResponse.swift; path = "app-gathering-app-server/Sources/App/Models/ProductResponse.swift"; sourceTree = SOURCE_ROOT; };
 		B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSoftwareDeveloperInfo.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSoftwareDeveloperInfo.swift"; sourceTree = SOURCE_ROOT; };
 		B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppsTableViewController.swift; path = "../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/AppsTableViewController.swift"; sourceTree = "<group>"; };
+		B3F3361522E92EAF007935DB /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserRequest.swift; path = "../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/UserRequest.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		B310234022DCF68900B56685 /* appgathering-ios-app */ = {
 			isa = PBXGroup;
 			children = (
+				B3F3361522E92EAF007935DB /* UserRequest.swift */,
 				B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
 				B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */,
 				B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */,
@@ -221,6 +224,7 @@
 				B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */,
 				B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */,
 				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,
+				B3F3361622E92EAF007935DB /* UserRequest.swift in Sources */,
 				B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */,
 				B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */,
 				B38F0F7322E90672008E3D0A /* DeveloperResponse.swift in Sources */,
