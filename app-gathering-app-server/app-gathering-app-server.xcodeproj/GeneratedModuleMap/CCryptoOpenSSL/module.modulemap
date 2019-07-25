@@ -1,0 +1,4 @@
+module CCryptoOpenSSL {
+    umbrella "/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/.build/checkouts/crypto/Sources/CCryptoOpenSSL/include"
+    export *
+}
