@@ -194,7 +194,13 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       return
     }
 
-    URLSession.shared.dataTask(with: request).resume()
+    URLSession.shared.dataTask(with: request) { _, _, error in
+      guard error == nil else {
+        return
+      }
+
+      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
+    }
   }
 
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {

@@ -22,7 +22,7 @@ public func routes(_ router: Router) throws {
 
   let apswProductController = AppleSoftwareProductController(platformController: platformController)
   router.post("iTunesProducts", Int.parameter, use: apswProductController.create)
-  
+
   router.get("products", use: productController.list)
   //    let todoController = ProductController()
   //    router.get("todos", use: todoController.index)

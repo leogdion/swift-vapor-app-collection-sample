@@ -8,7 +8,6 @@
 import FluentPostgreSQL
 import Vapor
 
-
 extension DeveloperResponse {
   static func future(from developerPair: Future<(Developer, AppleSoftwareDeveloper)>) -> Future<DeveloperResponse> {
     return developerPair.map { developer, appleSoftwareDeveloper in
@@ -62,9 +61,6 @@ extension ProductResponse {
     }
   }
 }
-
-
-
 
 final class AppleSoftwareProductController {
   let platformController: PlatformController

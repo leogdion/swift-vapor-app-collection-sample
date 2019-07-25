@@ -1,7 +1,7 @@
 import Foundation
 
 #if os(Linux) || os(macOS)
-import Vapor
+  import Vapor
 #endif
 
 struct ProductResponse: Codable {
@@ -15,5 +15,5 @@ struct ProductResponse: Codable {
 }
 
 #if os(Linux) || os(macOS)
-extension ProductResponse : Content {}
+  extension ProductResponse: Content {}
 #endif

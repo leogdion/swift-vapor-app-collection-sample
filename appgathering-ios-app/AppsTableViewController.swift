@@ -9,6 +9,7 @@ import UIKit
 
 class AppsTableViewController: UITableViewController, TabItemable {
   var loaded = false
+  let jsonDecoder = JSONDecoder()
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -17,12 +18,30 @@ class AppsTableViewController: UITableViewController, TabItemable {
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil, queue: nil, using: onUpdate(notification:))
+  }
+
+  func begin() {
+    guard let request = try? RequestBuilder.shared.request(withPath: "/products", andMethod: "GET") else {
+      return
+    }
+
+    URLSession.shared.dataTask(with: request) { data, _, _ in
+      guard let data = data else {
+        return
+      }
+    }
+  }
+
+  func onUpdate(notification _: Notification) {
+    begin()
   }
 
   override func viewDidAppear(_: Bool) {
     guard !loaded else {
       return
     }
+    begin()
   }
 
   // MARK: - Table view data source

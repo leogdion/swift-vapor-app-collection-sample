@@ -41,6 +41,7 @@
 		B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		B336088E22DD696B00ADEEFF /* NoDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataError.swift; sourceTree = "<group>"; };
+		B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "appgathering-ios-app.entitlements"; sourceTree = "<group>"; };
 		B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResult.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResult.swift"; sourceTree = SOURCE_ROOT; };
 		B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResultItem.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResultItem.swift"; sourceTree = SOURCE_ROOT; };
 		B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSoftwareProductInfo.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSoftwareProductInfo.swift"; sourceTree = SOURCE_ROOT; };
@@ -66,26 +67,27 @@
 		B310234022DCF68900B56685 /* appgathering-ios-app */ = {
 			isa = PBXGroup;
 			children = (
-				B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */,
-				B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */,
-				B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */,
-				B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
-				B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */,
-				B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */,
-				B38F0F7022E90672008E3D0A /* ProductResponse.swift */,
 				B310234122DCF68900B56685 /* AppDelegate.swift */,
+				B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */,
 				B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */,
 				B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */,
+				B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
+				B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */,
+				B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */,
 				B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */,
 				B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */,
 				B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */,
 				B310234A22DCF68D00B56685 /* Assets.xcassets */,
+				B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */,
 				B310234F22DCF68D00B56685 /* Info.plist */,
 				B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */,
 				B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */,
 				B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */,
 				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
+				B38F0F7022E90672008E3D0A /* ProductResponse.swift */,
+				B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */,
 				B310234322DCF68900B56685 /* SceneDelegate.swift */,
+				B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */,
 			);
 			path = "appgathering-ios-app";
 			sourceTree = "<group>";
@@ -285,7 +287,9 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "appgathering-ios-app/appgathering-ios-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = MLT7M394S7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -310,9 +314,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.brightdigit.appgathering-ios-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -348,8 +353,10 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "appgathering-ios-app/appgathering-ios-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = MLT7M394S7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -369,8 +376,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.brightdigit.appgathering-ios-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
