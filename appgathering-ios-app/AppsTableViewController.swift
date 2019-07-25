@@ -7,9 +7,37 @@
 
 import UIKit
 
+extension JSONDecoder {
+  func decode<T>(_ type: T.Type, from data: Data?, withError error: Error?, elseError defaultError: Error) -> Result<T, Error> where T: Decodable {
+    let result: Result<T, Error>
+    if let error = error {
+      result = .failure(error)
+    } else if let data = data {
+      do {
+        let products = try decode(type, from: data)
+
+        result = .success(products)
+      } catch {
+        result = .failure(error)
+      }
+    } else {
+      result = .failure(defaultError)
+    }
+    return result
+  }
+}
+
 class AppsTableViewController: UITableViewController, TabItemable {
   var loaded = false
   let jsonDecoder = JSONDecoder()
+  var result: Result<[ProductResponse], Error>? {
+    didSet {
+      DispatchQueue.main.async {
+        self.tableView.reloadData()
+      }
+    }
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -26,10 +54,8 @@ class AppsTableViewController: UITableViewController, TabItemable {
       return
     }
 
-    URLSession.shared.dataTask(with: request) { data, _, _ in
-      guard let data = data else {
-        return
-      }
+    URLSession.shared.dataTask(with: request) { data, _, error in
+      self.result = self.jsonDecoder.decode([ProductResponse].self, from: data, withError: error, elseError: NoDataError())
     }
   }
 
