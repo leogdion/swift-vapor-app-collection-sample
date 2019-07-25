@@ -112,6 +112,14 @@ class AppsTableViewController: UITableViewController, TabItemable {
     return searchResultCell
   }
 
+  override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
+    return 90.0
+  }
+
+//  override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt _: IndexPath) -> UISwipeActionsConfiguration? {}
+//
+//  override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt _: IndexPath) -> UISwipeActionsConfiguration? {}
+
   /*
    // Override to support conditional editing of the table view.
    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

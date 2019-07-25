@@ -16,6 +16,7 @@
 		B310235C22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */; };
 		B3319E8022DE3A5700A4B0D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */; };
 		B3319E8122DE3A5700A4B0D1 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */; };
+		B335219522EA59A70027A118 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B335219422EA59A70027A118 /* StoreKit.framework */; };
 		B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336088E22DD696B00ADEEFF /* NoDataError.swift */; };
 		B342C7F222DF724E00D69A6A /* AppleSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */; };
 		B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */; };
@@ -40,6 +41,7 @@
 		B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AppStoreSearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		B335219422EA59A70027A118 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B336088E22DD696B00ADEEFF /* NoDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataError.swift; sourceTree = "<group>"; };
 		B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "appgathering-ios-app.entitlements"; sourceTree = "<group>"; };
 		B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResult.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResult.swift"; sourceTree = SOURCE_ROOT; };
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B335219522EA59A70027A118 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,11 +95,20 @@
 			path = "appgathering-ios-app";
 			sourceTree = "<group>";
 		};
+		B335219322EA59A60027A118 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B335219422EA59A70027A118 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				B310234022DCF68900B56685 /* appgathering-ios-app */,
 				OBJ_923 /* Products */,
+				B335219322EA59A60027A118 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

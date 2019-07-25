@@ -5,6 +5,7 @@
 //  Created by Leo Dion on 7/15/19.
 //
 
+import StoreKit
 import UIKit
 
 protocol TabItemable {
@@ -26,7 +27,7 @@ extension UITabBarController {
   }
 }
 
-class AppStoreSearchResultTableViewController: UITableViewController, UISearchResultsUpdating, TabItemable {
+class AppStoreSearchResultTableViewController: UITableViewController, UISearchResultsUpdating, TabItemable, SKStoreProductViewControllerDelegate {
   let reuseIdentifier = "reuseIdentifier"
   weak var alertController: UIAlertController?
   weak var busyView: UIView!
@@ -184,11 +185,14 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     return searchResultCell
   }
 
-  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+  func addAction(_: UIAlertAction) {
+    guard let indexPath = self.tableView.indexPathForSelectedRow else {
       return
     }
 
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      return
+    }
     guard let request =
       try? RequestBuilder.shared.request(withPath: "/iTunesProducts/\(searchItem.trackId)", andMethod: "POST") else {
       return
@@ -209,6 +213,112 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     }.resume()
   }
 
+  func openAppStore(_: UIAlertAction) {
+    guard let indexPath = self.tableView.indexPathForSelectedRow else {
+      return
+    }
+
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      return
+    }
+
+    let storeController = SKStoreProductViewController()
+    storeController.delegate = self
+    storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: searchItem.trackId]) { loaded, error in
+      debugPrint(error)
+      if loaded {
+        self.present(storeController, animated: true, completion: nil)
+      }
+    }
+  }
+
+  func openAppStoreContextual(_: UIContextualAction, view: UIView, _ completed: @escaping (Bool) -> Void) {
+    guard let cell = view as? UITableViewCell else {
+      return completed(false)
+    }
+    guard let indexPath = self.tableView.indexPath(for: cell) else {
+      return completed(false)
+    }
+
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      return completed(false)
+    }
+
+    let storeController = SKStoreProductViewController()
+    storeController.delegate = self
+    storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: searchItem.trackId]) { loaded, _ in
+      if loaded {
+        self.present(storeController, animated: true, completion: nil)
+      }
+      completed(loaded)
+    }
+  }
+
+  func addContextual(_: UIContextualAction, _: UIView, completed: @escaping (Bool) -> Void) {
+    guard let cell = view as? UITableViewCell else {
+      return completed(false)
+    }
+    guard let indexPath = self.tableView.indexPath(for: cell) else {
+      return completed(false)
+    }
+
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      completed(false)
+      return
+    }
+    guard let request =
+      try? RequestBuilder.shared.request(withPath: "/iTunesProducts/\(searchItem.trackId)", andMethod: "POST") else {
+      completed(false)
+      return
+    }
+
+    busyView.isHidden = false
+    URLSession.shared.dataTask(with: request) { _, _, error in
+      guard error == nil else {
+        completed(false)
+        return
+      }
+
+      DispatchQueue.main.async {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        self.busyView.isHidden = true
+      }
+
+      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
+
+      completed(true)
+    }.resume()
+  }
+
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      return
+    }
+
+    let alertController = UIAlertController(title: searchItem.trackName, message: "What would you like to do?", preferredStyle: .actionSheet)
+
+    alertController.addAction(UIAlertAction(title: "Add App", style: .destructive, handler: addAction))
+
+    if let url = searchItem.sellerUrl {
+      alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: {
+        _ in
+        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: {
+          _ in
+          self.tableView.deselectRow(at: indexPath, animated: true)
+        })
+      }))
+    }
+
+    alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
+
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {
+      _ in
+      self.tableView.deselectRow(at: indexPath, animated: true)
+    }))
+
+    present(alertController, animated: true, completion: nil)
+  }
+
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
     return 90.0
   }
@@ -216,5 +326,32 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
   func configureTabItem(_ tabItem: UITabBarItem) {
     tabItem.title = "Search"
     tabItem.image = UIImage(systemName: "magnifyingglass")
+  }
+
+  override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    guard let searchItem = (try? result?.get())?[indexPath.row] else {
+      return nil
+    }
+    var actions = [UIContextualAction]()
+
+    actions.append(UIContextualAction(style: .destructive, title: "Add", handler: addContextual))
+
+    if let url = searchItem.sellerUrl {
+      actions.append(UIContextualAction(style: .normal, title: "Web", handler: { _, _, _ in
+        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: nil)
+      }))
+    }
+
+    actions.append(UIContextualAction(style: .normal, title: "App Store", handler: openAppStoreContextual))
+
+    return UISwipeActionsConfiguration(actions: actions)
+  }
+
+  func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+    viewController.dismiss(animated: true) {
+      if let indexPath = self.tableView.indexPathForSelectedRow {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+      }
+    }
   }
 }
