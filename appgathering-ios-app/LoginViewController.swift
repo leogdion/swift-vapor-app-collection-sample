@@ -89,7 +89,7 @@ class LoginViewController: UIViewController {
       guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
         return
       }
-      // RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
+      RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
 //      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
 //      UserDefaults.standard.set(self.urlComponents?.url, forKey: "baseUrl")
 
@@ -136,7 +136,7 @@ class LoginViewController: UIViewController {
       guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
         return
       }
-      // RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
+      RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
       DispatchQueue.main.async {
         self.dismiss(animated: true, completion: nil)
       }

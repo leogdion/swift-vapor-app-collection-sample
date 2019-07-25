@@ -189,10 +189,12 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       return
     }
 
-//    guard let request =
-//      //RequestBuilder.shared.request(path: "/iTunesProducts/\(searchItem.trackId)", httpMethod: "POST") else {
-//      return
-//    }
+    guard let request =
+      try? RequestBuilder.shared.request(withPath: "/iTunesProducts/\(searchItem.trackId)", andMethod: "POST") else {
+      return
+    }
+
+    URLSession.shared.dataTask(with: request).resume()
   }
 
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {

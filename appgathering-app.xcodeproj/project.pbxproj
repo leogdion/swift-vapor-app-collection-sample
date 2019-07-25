@@ -23,8 +23,9 @@
 		B38F0F7322E90672008E3D0A /* DeveloperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */; };
 		B38F0F7422E90672008E3D0A /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7022E90672008E3D0A /* ProductResponse.swift */; };
 		B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */; };
-		B3B9372A22E8D08700FAF6C1 /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */; };
-		B3F3361622E92EAF007935DB /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F3361522E92EAF007935DB /* UserRequest.swift */; };
+		B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */; };
+		B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */; };
+		B38F0F8F22E9DD91008E3D0A /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,8 +47,9 @@
 		B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeveloperResponse.swift; path = "app-gathering-app-server/Sources/App/Models/DeveloperResponse.swift"; sourceTree = SOURCE_ROOT; };
 		B38F0F7022E90672008E3D0A /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductResponse.swift; path = "app-gathering-app-server/Sources/App/Models/ProductResponse.swift"; sourceTree = SOURCE_ROOT; };
 		B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSoftwareDeveloperInfo.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSoftwareDeveloperInfo.swift"; sourceTree = SOURCE_ROOT; };
-		B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppsTableViewController.swift; path = "../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/AppsTableViewController.swift"; sourceTree = "<group>"; };
-		B3F3361522E92EAF007935DB /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserRequest.swift; path = "../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/UserRequest.swift"; sourceTree = "<group>"; };
+		B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
+		B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsTableViewController.swift; sourceTree = "<group>"; };
+		B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserRequest.swift; path = "app-gathering-app-server/Sources/App/Models/UserRequest.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +66,9 @@
 		B310234022DCF68900B56685 /* appgathering-ios-app */ = {
 			isa = PBXGroup;
 			children = (
-				B3F3361522E92EAF007935DB /* UserRequest.swift */,
+				B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */,
+				B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */,
+				B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */,
 				B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
 				B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */,
 				B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */,
@@ -82,7 +86,6 @@
 				B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */,
 				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
 				B310234322DCF68900B56685 /* SceneDelegate.swift */,
-				B3B9372922E8D08700FAF6C1 /* AppsTableViewController.swift */,
 			);
 			path = "appgathering-ios-app";
 			sourceTree = "<group>";
@@ -219,13 +222,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B38F0F7422E90672008E3D0A /* ProductResponse.swift in Sources */,
+				B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */,
 				B342C7F222DF724E00D69A6A /* AppleSearchResult.swift in Sources */,
-				B3B9372A22E8D08700FAF6C1 /* AppsTableViewController.swift in Sources */,
 				B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */,
 				B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */,
 				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,
-				B3F3361622E92EAF007935DB /* UserRequest.swift in Sources */,
 				B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */,
+				B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */,
+				B38F0F8F22E9DD91008E3D0A /* UserRequest.swift in Sources */,
 				B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */,
 				B38F0F7322E90672008E3D0A /* DeveloperResponse.swift in Sources */,
 				B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */,
