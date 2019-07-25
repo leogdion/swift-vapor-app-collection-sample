@@ -19,8 +19,8 @@ final class RequestBuilder: RequestBuilderProtocol {
     return UserDefaults.standard.url(forKey: "baseUrl")
   }
 
-  var userRequest: UserRequest? {
-    return UserDefaults.standard.string(forKey: "userId").flatMap { UUID(uuidString: $0) }.map { UserRequest(id: $0) }
+  var userId: UUID? {
+    return UserDefaults.standard.string(forKey: "userId").flatMap(UUID.init)
   }
 
   func save(baseUrl: URL, forUserWithId userId: UUID) {
@@ -39,9 +39,8 @@ final class RequestBuilder: RequestBuilderProtocol {
     urlRequest.httpMethod = httpMethod
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
-    if let userRequest = self.userRequest {
-      let body = try jsonEncoder.encode(userRequest)
-      urlRequest.httpBody = body
+    if let userId = self.userId {
+      urlRequest.addValue(userId.uuidString, forHTTPHeaderField: "X-User-Id")
     }
 
     return urlRequest

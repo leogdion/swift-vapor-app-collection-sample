@@ -30,6 +30,8 @@ extension JSONDecoder {
 class AppsTableViewController: UITableViewController, TabItemable {
   var loaded = false
   let jsonDecoder = JSONDecoder()
+  var observer: NSObjectProtocol?
+  let reuseIdentifier = "reuseIdentifier"
   var result: Result<[ProductResponse], Error>? {
     didSet {
       DispatchQueue.main.async {
@@ -46,7 +48,9 @@ class AppsTableViewController: UITableViewController, TabItemable {
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil, queue: nil, using: onUpdate(notification:))
+    observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil, queue: nil, using: onUpdate(notification:))
+
+    tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
   }
 
   func begin() {
@@ -56,9 +60,10 @@ class AppsTableViewController: UITableViewController, TabItemable {
 
     URLSession.shared.dataTask(with: request) { data, _, error in
       self.result = self.jsonDecoder.decode([ProductResponse].self, from: data, withError: error, elseError: NoDataError())
-    }
+    }.resume()
   }
 
+  @objc
   func onUpdate(notification _: Notification) {
     begin()
   }
@@ -68,29 +73,44 @@ class AppsTableViewController: UITableViewController, TabItemable {
       return
     }
     begin()
+    loaded = true
   }
 
   // MARK: - Table view data source
 
-  override func numberOfSections(in _: UITableView) -> Int {
-    // #warning Incomplete implementation, return the number of sections
-    return 0
-  }
-
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     // #warning Incomplete implementation, return the number of rows
-    return 0
+    return result.flatMap { try? $0.get() }?.count ?? 0
   }
 
-  /*
-   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
-       // Configure the cell...
+    guard let searchResultCell = cell as? AppStoreSearchResultTableViewCell else {
+      return cell
+    }
 
-       return cell
-   }
-   */
+    guard let item = (try? self.result?.get())?[indexPath.row] else {
+      return searchResultCell
+    }
+
+    if let sourceImageUrl = item.sourceImageUrl {
+      DispatchQueue.global().async {
+        guard let data = try? Data(contentsOf: sourceImageUrl) else {
+          return
+        }
+        DispatchQueue.main.async {
+          searchResultCell.artworkView.image = UIImage(data: data)
+        }
+      }
+    }
+    // loadArtwork(fromUrl: item.artworkUrl512, forCellAtIndexPath: indexPath)
+
+    searchResultCell.nameLabel.text = item.name
+    searchResultCell.subtitleLabel.text = "by \(item.developer.name)"
+
+    return searchResultCell
+  }
 
   /*
    // Override to support conditional editing of the table view.
@@ -140,5 +160,13 @@ class AppsTableViewController: UITableViewController, TabItemable {
   func configureTabItem(_: UITabBarItem) {
     tabBarItem.title = "Apps"
     tabBarItem.image = UIImage(systemName: "app.badge.fill")
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    if let observer = self.observer {
+      NotificationCenter.default.removeObserver(observer)
+    }
+    observer = nil
+    super.viewWillDisappear(animated)
   }
 }

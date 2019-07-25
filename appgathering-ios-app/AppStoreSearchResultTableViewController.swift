@@ -194,13 +194,19 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       return
     }
 
+    busyView.isHidden = false
     URLSession.shared.dataTask(with: request) { _, _, error in
       guard error == nil else {
         return
       }
 
+      DispatchQueue.main.async {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        self.busyView.isHidden = true
+      }
+
       NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
-    }
+    }.resume()
   }
 
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {

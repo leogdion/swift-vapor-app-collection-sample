@@ -165,8 +165,8 @@ final class AppleSoftwareProductController {
   }
 
   func create(_ req: Request) throws -> Future<ProductResponse> {
-    let userFuture = try req.content.decode(UserRequest.self)
 
+    let userF = try req.user()
     let iTunesTrackID = try req.parameters.next(Int.self)
     let iTunesProduct = try product(lookupByTrackId: iTunesTrackID, on: req).unwrap(or: Abort(HTTPStatus.notFound))
 
@@ -189,15 +189,14 @@ final class AppleSoftwareProductController {
         try self.platforms(upsertBasedOn: platformsFuture, forProduct: $0.0, on: req)
       }
       let developerResponseF = DeveloperResponse.future(from: developerFuture)
-      let userProductF = userFuture.map { userRequest in
-        User.find(userRequest.id, on: req).unwrap(or: Abort(HTTPResponseStatus.unauthorized))
-          .and(productFuture).flatMap { userAndProduct -> Future<UserProduct> in
+      return userF.and(productFuture).flatMap { userAndProduct -> Future<UserProduct> in
             let user = userAndProduct.0
             let product = userAndProduct.1.0
             return user.products.attach(product, on: req)
-          }
+      }.then {_ in 
+        return ProductResponse.future(from: productFuture, withDeveloper: developerResponseF, withPlatforms: platformsFuture)
       }
-      return ProductResponse.future(from: productFuture, withDeveloper: developerResponseF, withPlatforms: platformsFuture)
+      
     }
   }
 }
