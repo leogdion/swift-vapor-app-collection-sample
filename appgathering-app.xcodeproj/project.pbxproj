@@ -18,16 +18,17 @@
 		B3319E8122DE3A5700A4B0D1 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */; };
 		B335219522EA59A70027A118 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B335219422EA59A70027A118 /* StoreKit.framework */; };
 		B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336088E22DD696B00ADEEFF /* NoDataError.swift */; };
-		B342C7F222DF724E00D69A6A /* AppleSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */; };
-		B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */; };
-		B38F0F7222E90672008E3D0A /* AppleSoftwareProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */; };
-		B38F0F7322E90672008E3D0A /* DeveloperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */; };
-		B38F0F7422E90672008E3D0A /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7022E90672008E3D0A /* ProductResponse.swift */; };
-		B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */; };
 		B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */; };
 		B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */; };
 		B3C7271C22EB5C69004F150C /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7271B22EB5C69004F150C /* JSONDecoder.swift */; };
 		B3C7272022EB6316004F150C /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7271F22EB6316004F150C /* UIView.swift */; };
+		B3C7272D22EB6690004F150C /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7272C22EB6690004F150C /* NotificationNames.swift */; };
+		B3C7273722EB670B004F150C /* DeveloperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273122EB670B004F150C /* DeveloperResponse.swift */; };
+		B3C7273822EB670B004F150C /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273222EB670B004F150C /* ProductResponse.swift */; };
+		B3C7273922EB670B004F150C /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273322EB670B004F150C /* AppleSoftwareDeveloperInfo.swift */; };
+		B3C7273A22EB670B004F150C /* AppleSoftwareProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */; };
+		B3C7273B22EB670B004F150C /* AppleSearchResultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */; };
+		B3C7273C22EB670B004F150C /* AppleSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273622EB670B004F150C /* AppleSearchResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,16 +46,17 @@
 		B335219422EA59A70027A118 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B336088E22DD696B00ADEEFF /* NoDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataError.swift; sourceTree = "<group>"; };
 		B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "appgathering-ios-app.entitlements"; sourceTree = "<group>"; };
-		B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResult.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResult.swift"; sourceTree = SOURCE_ROOT; };
-		B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSearchResultItem.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSearchResultItem.swift"; sourceTree = SOURCE_ROOT; };
-		B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSoftwareProductInfo.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSoftwareProductInfo.swift"; sourceTree = SOURCE_ROOT; };
-		B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeveloperResponse.swift; path = "app-gathering-app-server/Sources/App/Models/DeveloperResponse.swift"; sourceTree = SOURCE_ROOT; };
-		B38F0F7022E90672008E3D0A /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductResponse.swift; path = "app-gathering-app-server/Sources/App/Models/ProductResponse.swift"; sourceTree = SOURCE_ROOT; };
-		B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSoftwareDeveloperInfo.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSoftwareDeveloperInfo.swift"; sourceTree = SOURCE_ROOT; };
 		B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsTableViewController.swift; sourceTree = "<group>"; };
 		B3C7271B22EB5C69004F150C /* JSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecoder.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/JSONDecoder.swift"; sourceTree = "<group>"; };
 		B3C7271F22EB6316004F150C /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIView.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/UIView.swift"; sourceTree = "<group>"; };
+		B3C7272C22EB6690004F150C /* NotificationNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
+		B3C7273122EB670B004F150C /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperResponse.swift; sourceTree = "<group>"; };
+		B3C7273222EB670B004F150C /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
+		B3C7273322EB670B004F150C /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareDeveloperInfo.swift; sourceTree = "<group>"; };
+		B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareProductInfo.swift; sourceTree = "<group>"; };
+		B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResultItem.swift; sourceTree = "<group>"; };
+		B3C7273622EB670B004F150C /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,22 +77,16 @@
 				B39857DD22EB596800F46A92 /* Extensions */,
 				B310234122DCF68900B56685 /* AppDelegate.swift */,
 				B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */,
-				B342C7F022DF724E00D69A6A /* AppleSearchResult.swift */,
-				B342C7F122DF724E00D69A6A /* AppleSearchResultItem.swift */,
-				B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
-				B38F0F6E22E90671008E3D0A /* AppleSoftwareProductInfo.swift */,
 				B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */,
 				B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */,
 				B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */,
 				B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */,
 				B310234A22DCF68D00B56685 /* Assets.xcassets */,
-				B38F0F6F22E90671008E3D0A /* DeveloperResponse.swift */,
 				B310234F22DCF68D00B56685 /* Info.plist */,
 				B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */,
 				B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */,
 				B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */,
-				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
-				B38F0F7022E90672008E3D0A /* ProductResponse.swift */,
+				B3C7272722EB6657004F150C /* Models */,
 				B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */,
 				B310234322DCF68900B56685 /* SceneDelegate.swift */,
 			);
@@ -112,6 +108,30 @@
 				B3C7271F22EB6316004F150C /* UIView.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B3C7272722EB6657004F150C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B3C7273022EB670B004F150C /* Shared */,
+				B3C7272C22EB6690004F150C /* NotificationNames.swift */,
+				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B3C7273022EB670B004F150C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B3C7273122EB670B004F150C /* DeveloperResponse.swift */,
+				B3C7273222EB670B004F150C /* ProductResponse.swift */,
+				B3C7273322EB670B004F150C /* AppleSoftwareDeveloperInfo.swift */,
+				B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */,
+				B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */,
+				B3C7273622EB670B004F150C /* AppleSearchResult.swift */,
+			);
+			name = Shared;
+			path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/Shared";
 			sourceTree = "<group>";
 		};
 		OBJ_5 = {
@@ -246,19 +266,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3C7273C22EB670B004F150C /* AppleSearchResult.swift in Sources */,
 				B3C7272022EB6316004F150C /* UIView.swift in Sources */,
-				B38F0F7422E90672008E3D0A /* ProductResponse.swift in Sources */,
 				B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */,
-				B342C7F222DF724E00D69A6A /* AppleSearchResult.swift in Sources */,
+				B3C7273A22EB670B004F150C /* AppleSoftwareProductInfo.swift in Sources */,
+				B3C7272D22EB6690004F150C /* NotificationNames.swift in Sources */,
 				B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */,
 				B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */,
 				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,
-				B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */,
 				B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */,
+				B3C7273722EB670B004F150C /* DeveloperResponse.swift in Sources */,
+				B3C7273822EB670B004F150C /* ProductResponse.swift in Sources */,
 				B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */,
-				B38F0F7322E90672008E3D0A /* DeveloperResponse.swift in Sources */,
-				B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */,
-				B38F0F7222E90672008E3D0A /* AppleSoftwareProductInfo.swift in Sources */,
+				B3C7273922EB670B004F150C /* AppleSoftwareDeveloperInfo.swift in Sources */,
+				B3C7273B22EB670B004F150C /* AppleSearchResultItem.swift in Sources */,
 				B3C7271C22EB5C69004F150C /* JSONDecoder.swift in Sources */,
 				B3319E8022DE3A5700A4B0D1 /* LoginViewController.swift in Sources */,
 				B310234422DCF68900B56685 /* SceneDelegate.swift in Sources */,

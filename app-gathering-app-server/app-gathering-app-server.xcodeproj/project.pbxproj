@@ -6956,6 +6956,19 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		B3C7272622EB6627004F150C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_15 /* AppleSearchResult.swift */,
+				OBJ_16 /* AppleSearchResultItem.swift */,
+				B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
+				B38F0F6622E90661008E3D0A /* AppleSoftwareProductInfo.swift */,
+				B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */,
+				B38F0F6722E90661008E3D0A /* ProductResponse.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		OBJ_118 /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
@@ -7002,18 +7015,13 @@
 		OBJ_14 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_15 /* AppleSearchResult.swift */,
-				OBJ_16 /* AppleSearchResultItem.swift */,
+				B3C7272622EB6627004F150C /* Shared */,
 				OBJ_17 /* AppleSoftwareDeveloper.swift */,
-				B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
 				OBJ_19 /* AppleSoftwareProduct.swift */,
-				B38F0F6622E90661008E3D0A /* AppleSoftwareProductInfo.swift */,
 				OBJ_21 /* Developer.swift */,
-				B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */,
 				OBJ_23 /* Platform.swift */,
 				OBJ_24 /* Product.swift */,
 				OBJ_25 /* ProductPlatform.swift */,
-				B38F0F6722E90661008E3D0A /* ProductResponse.swift */,
 				OBJ_27 /* User.swift */,
 				OBJ_28 /* UserProduct.swift */,
 			);

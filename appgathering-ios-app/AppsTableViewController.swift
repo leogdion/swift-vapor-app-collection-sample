@@ -55,15 +55,16 @@ class AppsTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    // add a busy overlay
     busyView = view.addBusyView()
 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // navigationItem.rightBarButtonItem = editButtonItem
+    // observe changes to the user's app collection
     observer = NotificationCenter.default.addObserver(
-      forName: NSNotification.Name(rawValue: "AppCollectionUpdated"),
+      forName: NotificationNames.AppCollectionUpdated,
       object: nil, queue: nil, using: onUpdate(notification:)
     )
 
+    // register the UITableViewCell
     tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: AppsTableViewController.reuseIdentifier)
   }
 
@@ -83,7 +84,6 @@ class AppsTableViewController: UITableViewController {
     task.resume()
   }
 
-  @objc
   func onUpdate(notification _: Notification) {
     begin()
   }
