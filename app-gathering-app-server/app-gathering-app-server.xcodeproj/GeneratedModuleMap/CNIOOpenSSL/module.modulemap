@@ -1,0 +1,4 @@
+module CNIOOpenSSL {
+    umbrella "/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/.build/checkouts/swift-nio-ssl/Sources/CNIOOpenSSL/include"
+    export *
+}

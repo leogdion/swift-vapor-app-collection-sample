@@ -1,0 +1,6 @@
+{
+  "set" : "appgathering-ios-app/Assets.xcassets/AppIcon.appiconset",
+  "source" : "app.svg",
+  "background" : "#FFFFFFFF",
+  "remove-alpha" : true
+}

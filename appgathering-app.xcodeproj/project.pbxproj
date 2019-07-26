@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B310234222DCF68900B56685 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310234122DCF68900B56685 /* AppDelegate.swift */; };
+		B310234422DCF68900B56685 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310234322DCF68900B56685 /* SceneDelegate.swift */; };
+		B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */; };
+		B310234B22DCF68D00B56685 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B310234A22DCF68D00B56685 /* Assets.xcassets */; };
+		B310234E22DCF68D00B56685 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */; };
+		B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */; };
+		B310235C22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */; };
+		B3319E8022DE3A5700A4B0D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */; };
+		B3319E8122DE3A5700A4B0D1 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */; };
+		B335219522EA59A70027A118 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B335219422EA59A70027A118 /* StoreKit.framework */; };
+		B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B336088E22DD696B00ADEEFF /* NoDataError.swift */; };
+		B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */; };
+		B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */; };
+		B3C7271C22EB5C69004F150C /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7271B22EB5C69004F150C /* JSONDecoder.swift */; };
+		B3C7272022EB6316004F150C /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7271F22EB6316004F150C /* UIView.swift */; };
+		B3C7272D22EB6690004F150C /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7272C22EB6690004F150C /* NotificationNames.swift */; };
+		B3C7273722EB670B004F150C /* DeveloperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273122EB670B004F150C /* DeveloperResponse.swift */; };
+		B3C7273822EB670B004F150C /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273222EB670B004F150C /* ProductResponse.swift */; };
+		B3C7273922EB670B004F150C /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273322EB670B004F150C /* AppleSoftwareDeveloperInfo.swift */; };
+		B3C7273A22EB670B004F150C /* AppleSoftwareProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */; };
+		B3C7273B22EB670B004F150C /* AppleSearchResultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */; };
+		B3C7273C22EB670B004F150C /* AppleSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273622EB670B004F150C /* AppleSearchResult.swift */; };
+		B3C7274022EB715C004F150C /* NotImplmentedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273F22EB715C004F150C /* NotImplmentedError.swift */; };
+		B3C7274222EB7173004F150C /* URLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274122EB7173004F150C /* URLResponse.swift */; };
+		B3C7274422EB71AF004F150C /* TabItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274322EB71AF004F150C /* TabItemable.swift */; };
+		B3C7274622EB71C1004F150C /* UITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274522EB71C1004F150C /* UITabBarController.swift */; };
+		B3C7274822EB78F5004F150C /* SignupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274722EB78F5004F150C /* SignupRequest.swift */; };
+		B3C7274A22EB7908004F150C /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274922EB7908004F150C /* UserResponse.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B310233F22DCF68900B56685 /* appgathering-ios-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "appgathering-ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B310234122DCF68900B56685 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B310234322DCF68900B56685 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSearchResultTableViewController.swift; sourceTree = "<group>"; };
+		B310234A22DCF68D00B56685 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B310234D22DCF68D00B56685 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B310234F22DCF68D00B56685 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AppStoreSearchResultTableViewCell.xib; sourceTree = "<group>"; };
+		B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		B335219422EA59A70027A118 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		B336088E22DD696B00ADEEFF /* NoDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataError.swift; sourceTree = "<group>"; };
+		B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "appgathering-ios-app.entitlements"; sourceTree = "<group>"; };
+		B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
+		B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsTableViewController.swift; sourceTree = "<group>"; };
+		B3C7271B22EB5C69004F150C /* JSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecoder.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/JSONDecoder.swift"; sourceTree = "<group>"; };
+		B3C7271F22EB6316004F150C /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIView.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/UIView.swift"; sourceTree = "<group>"; };
+		B3C7272C22EB6690004F150C /* NotificationNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
+		B3C7273122EB670B004F150C /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperResponse.swift; sourceTree = "<group>"; };
+		B3C7273222EB670B004F150C /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
+		B3C7273322EB670B004F150C /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareDeveloperInfo.swift; sourceTree = "<group>"; };
+		B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareProductInfo.swift; sourceTree = "<group>"; };
+		B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResultItem.swift; sourceTree = "<group>"; };
+		B3C7273622EB670B004F150C /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResult.swift; sourceTree = "<group>"; };
+		B3C7273F22EB715C004F150C /* NotImplmentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotImplmentedError.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Models/NotImplmentedError.swift"; sourceTree = "<group>"; };
+		B3C7274122EB7173004F150C /* URLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLResponse.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/URLResponse.swift"; sourceTree = "<group>"; };
+		B3C7274322EB71AF004F150C /* TabItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabItemable.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Views/TabItemable.swift"; sourceTree = "<group>"; };
+		B3C7274522EB71C1004F150C /* UITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITabBarController.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/UITabBarController.swift"; sourceTree = "<group>"; };
+		B3C7274722EB78F5004F150C /* SignupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupRequest.swift; sourceTree = "<group>"; };
+		B3C7274922EB7908004F150C /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B310233C22DCF68900B56685 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B335219522EA59A70027A118 /* StoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B310234022DCF68900B56685 /* appgathering-ios-app */ = {
+			isa = PBXGroup;
+			children = (
+				B39857DD22EB596800F46A92 /* Extensions */,
+				B310234122DCF68900B56685 /* AppDelegate.swift */,
+				B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */,
+				B3C7273E22EB67EE004F150C /* Controllers */,
+				B3C7273D22EB67E1004F150C /* Views */,
+				B310234A22DCF68D00B56685 /* Assets.xcassets */,
+				B310234F22DCF68D00B56685 /* Info.plist */,
+				B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */,
+				B3C7272722EB6657004F150C /* Models */,
+				B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */,
+				B310234322DCF68900B56685 /* SceneDelegate.swift */,
+			);
+			path = "appgathering-ios-app";
+			sourceTree = "<group>";
+		};
+		B335219322EA59A60027A118 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B335219422EA59A70027A118 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B39857DD22EB596800F46A92 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B3C7271B22EB5C69004F150C /* JSONDecoder.swift */,
+				B3C7271F22EB6316004F150C /* UIView.swift */,
+				B3C7274122EB7173004F150C /* URLResponse.swift */,
+				B3C7274522EB71C1004F150C /* UITabBarController.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B3C7272722EB6657004F150C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B3C7273022EB670B004F150C /* Shared */,
+				B3C7272C22EB6690004F150C /* NotificationNames.swift */,
+				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
+				B3C7273F22EB715C004F150C /* NotImplmentedError.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B3C7273022EB670B004F150C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B3C7273122EB670B004F150C /* DeveloperResponse.swift */,
+				B3C7273222EB670B004F150C /* ProductResponse.swift */,
+				B3C7273322EB670B004F150C /* AppleSoftwareDeveloperInfo.swift */,
+				B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */,
+				B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */,
+				B3C7273622EB670B004F150C /* AppleSearchResult.swift */,
+				B3C7274722EB78F5004F150C /* SignupRequest.swift */,
+				B3C7274922EB7908004F150C /* UserResponse.swift */,
+			);
+			name = Shared;
+			path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/Shared";
+			sourceTree = "<group>";
+		};
+		B3C7273D22EB67E1004F150C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */,
+				B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */,
+				B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */,
+				B3C7274322EB71AF004F150C /* TabItemable.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B3C7273E22EB67EE004F150C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */,
+				B310234522DCF68900B56685 /* AppStoreSearchResultTableViewController.swift */,
+				B3319E7E22DE3A5700A4B0D1 /* LoginViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		OBJ_5 = {
+			isa = PBXGroup;
+			children = (
+				B310234022DCF68900B56685 /* appgathering-ios-app */,
+				OBJ_923 /* Products */,
+				B335219322EA59A60027A118 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		OBJ_923 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B310233F22DCF68900B56685 /* appgathering-ios-app.app */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B310233E22DCF68900B56685 /* appgathering-ios-app */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B310235022DCF68D00B56685 /* Build configuration list for PBXNativeTarget "appgathering-ios-app" */;
+			buildPhases = (
+				B315055722E08ACD006FC881 /* swiftformat */,
+				B315055422E08962006FC881 /* swiftlint */,
+				B310233B22DCF68900B56685 /* Sources */,
+				B310233C22DCF68900B56685 /* Frameworks */,
+				B310233D22DCF68900B56685 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "appgathering-ios-app";
+			productName = "appgathering-ios-app";
+			productReference = B310233F22DCF68900B56685 /* appgathering-ios-app.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		OBJ_1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftMigration = 9999;
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					B310233E22DCF68900B56685 = {
+						CreatedOnToolsVersion = 11.0;
+						DevelopmentTeam = MLT7M394S7;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "appgathering-app" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = OBJ_5;
+			productRefGroup = OBJ_923 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B310233E22DCF68900B56685 /* appgathering-ios-app */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B310233D22DCF68900B56685 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3319E8122DE3A5700A4B0D1 /* LoginViewController.xib in Resources */,
+				B310234E22DCF68D00B56685 /* LaunchScreen.storyboard in Resources */,
+				B310234B22DCF68D00B56685 /* Assets.xcassets in Resources */,
+				B310235C22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B315055422E08962006FC881 /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		B315055722E08ACD006FC881 /* swiftformat */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftformat;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat appgathering-ios-app --swiftversion 5\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B310233B22DCF68900B56685 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3C7273C22EB670B004F150C /* AppleSearchResult.swift in Sources */,
+				B3C7274A22EB7908004F150C /* UserResponse.swift in Sources */,
+				B3C7274222EB7173004F150C /* URLResponse.swift in Sources */,
+				B3C7274422EB71AF004F150C /* TabItemable.swift in Sources */,
+				B3C7272022EB6316004F150C /* UIView.swift in Sources */,
+				B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */,
+				B3C7273A22EB670B004F150C /* AppleSoftwareProductInfo.swift in Sources */,
+				B3C7272D22EB6690004F150C /* NotificationNames.swift in Sources */,
+				B3C7274622EB71C1004F150C /* UITabBarController.swift in Sources */,
+				B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */,
+				B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */,
+				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,
+				B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */,
+				B3C7273722EB670B004F150C /* DeveloperResponse.swift in Sources */,
+				B3C7273822EB670B004F150C /* ProductResponse.swift in Sources */,
+				B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */,
+				B3C7273922EB670B004F150C /* AppleSoftwareDeveloperInfo.swift in Sources */,
+				B3C7273B22EB670B004F150C /* AppleSearchResultItem.swift in Sources */,
+				B3C7271C22EB5C69004F150C /* JSONDecoder.swift in Sources */,
+				B3319E8022DE3A5700A4B0D1 /* LoginViewController.swift in Sources */,
+				B3C7274822EB78F5004F150C /* SignupRequest.swift in Sources */,
+				B310234422DCF68900B56685 /* SceneDelegate.swift in Sources */,
+				B3C7274022EB715C004F150C /* NotImplmentedError.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B310234C22DCF68D00B56685 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B310234D22DCF68D00B56685 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B310235122DCF68D00B56685 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "appgathering-ios-app/appgathering-ios-app.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DEVELOPMENT_TEAM = MLT7M394S7;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "appgathering-ios-app/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.brightdigit.appgathering-ios-app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B310235222DCF68D00B56685 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "appgathering-ios-app/appgathering-ios-app.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				DEVELOPMENT_TEAM = MLT7M394S7;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "appgathering-ios-app/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.brightdigit.appgathering-ios-app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B310235022DCF68D00B56685 /* Build configuration list for PBXNativeTarget "appgathering-ios-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B310235122DCF68D00B56685 /* Debug */,
+				B310235222DCF68D00B56685 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_2 /* Build configuration list for PBXProject "appgathering-app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = OBJ_1 /* Project object */;
+}
