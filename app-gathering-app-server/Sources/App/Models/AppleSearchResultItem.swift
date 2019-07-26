@@ -6,6 +6,10 @@
 //
 
 import Foundation
+
+/**
+ The individual result item returned from an iTunes search query.
+ */
 struct AppleSearchResultItem: Codable {
   let artistId: Int
   let artistName: String

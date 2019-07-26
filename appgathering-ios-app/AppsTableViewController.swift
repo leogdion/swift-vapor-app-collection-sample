@@ -5,36 +5,45 @@
 //  Created by Leo Dion on 7/24/19.
 //
 
-import StoreKit
 import UIKit
 
-extension JSONDecoder {
-  func decode<T>(_ type: T.Type, from data: Data?, withError error: Error?, elseError defaultError: Error) -> Result<T, Error> where T: Decodable {
-    let result: Result<T, Error>
-    if let error = error {
-      result = .failure(error)
-    } else if let data = data {
-      do {
-        let products = try decode(type, from: data)
+// StoreKit disabled on simulator since there's no App Store
+#if !targetEnvironment(simulator)
+  import StoreKit
+#endif
 
-        result = .success(products)
-      } catch {
-        result = .failure(error)
-      }
-    } else {
-      result = .failure(defaultError)
-    }
-    return result
-  }
-}
+/**
+ UITableViewController for displaying the set of apps saved by the user.
+ */
+class AppsTableViewController: UITableViewController {
+  /**
+   Reuse Identifier for each UITableViewCell.
+   */
+  static let reuseIdentifier = "reuseIdentifier"
 
-class AppsTableViewController: UITableViewController, TabItemable, SKStoreProductViewControllerDelegate {
-  var loaded = false
-  let jsonDecoder = JSONDecoder()
+  /**
+   JSON Decoder for data from api.
+   */
+  static let jsonDecoder = JSONDecoder()
+
+  /**
+   Active Data Task.
+   */
+  var dataTask: URLSessionDataTask?
+
+  /**
+   Observer for watching changes to the user app collection.
+   */
   var observer: NSObjectProtocol?
 
+  /**
+   Access to the activity indicator and overlay.
+   */
   weak var busyView: UIView!
-  let reuseIdentifier = "reuseIdentifier"
+
+  /**
+   Decoded result from api call or error.
+   */
   var result: Result<[ProductResponse], Error>? {
     didSet {
       DispatchQueue.main.async {
@@ -46,19 +55,7 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = false
-
-    let activityIndicatorView = UIActivityIndicatorView(style: .large)
-    activityIndicatorView.startAnimating()
-    let busyView = UIView(frame: view.bounds)
-    busyView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-    busyView.addSubview(activityIndicatorView)
-    activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-    activityIndicatorView.centerXAnchor.constraint(equalTo: busyView.centerXAnchor).isActive = true
-    activityIndicatorView.centerYAnchor.constraint(equalTo: busyView.centerYAnchor).isActive = true
-    view.addSubview(busyView)
-    self.busyView = busyView
+    busyView = view.addBusyView()
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // navigationItem.rightBarButtonItem = editButtonItem
@@ -67,7 +64,7 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
       object: nil, queue: nil, using: onUpdate(notification:)
     )
 
-    tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+    tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: AppsTableViewController.reuseIdentifier)
   }
 
   func begin() {
@@ -75,13 +72,15 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
       return
     }
 
-    URLSession.shared.dataTask(with: request) { data, _, error in
-      self.result = self.jsonDecoder.decode([ProductResponse].self, from: data, withError: error, elseError: NoDataError())
+    let task = URLSession.shared.dataTask(with: request) { data, _, error in
+      self.result = AppsTableViewController.jsonDecoder.decode([ProductResponse].self, from: data, withError: error, elseError: NoDataError())
       DispatchQueue.main.async {
         self.busyView.isHidden = true
       }
-
-    }.resume()
+      self.dataTask = nil
+    }
+    dataTask = task
+    task.resume()
   }
 
   @objc
@@ -90,11 +89,10 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
   }
 
   override func viewDidAppear(_: Bool) {
-    guard !loaded else {
+    guard dataTask == nil, result == nil else {
       return
     }
     begin()
-    loaded = true
   }
 
   // MARK: - Table view data source
@@ -105,7 +103,7 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: AppsTableViewController.reuseIdentifier, for: indexPath)
 
     guard let searchResultCell = cell as? AppStoreSearchResultTableViewCell else {
       return cell
@@ -133,27 +131,30 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
     return searchResultCell
   }
 
-  func openAppStore(_: UIAlertAction) {
-    guard let indexPath = self.tableView.indexPathForSelectedRow else {
-      return
-    }
+  // StoreKit disabled on simulator since there's no App Store
+  #if !targetEnvironment(simulator)
+    func openAppStore(_: UIAlertAction) {
+      guard let indexPath = self.tableView.indexPathForSelectedRow else {
+        return
+      }
 
-    guard let product = (try? result?.get())?[indexPath.row] else {
-      return
-    }
+      guard let product = (try? result?.get())?[indexPath.row] else {
+        return
+      }
 
-    guard let trackId = product.appleSoftware?.trackId else {
-      return
-    }
+      guard let trackId = product.appleSoftware?.trackId else {
+        return
+      }
 
-    let storeController = SKStoreProductViewController()
-    storeController.delegate = self
-    storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: trackId]) { loaded, _ in
-      if loaded {
-        self.present(storeController, animated: true, completion: nil)
+      let storeController = SKStoreProductViewController()
+      storeController.delegate = self
+      storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: trackId]) { loaded, _ in
+        if loaded {
+          self.present(storeController, animated: true, completion: nil)
+        }
       }
     }
-  }
+  #endif
 
   func removeAction(_: UIAlertAction) {
     guard let indexPath = self.tableView.indexPathForSelectedRow else {
@@ -198,7 +199,7 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
         })
       }))
     }
-
+    // StoreKit disabled on simulator since there's no App Store
     #if !targetEnvironment(simulator)
       if product.appleSoftware?.trackId != nil {
         alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
@@ -216,23 +217,30 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
     return 120.0
   }
 
-  func configureTabItem(_: UITabBarItem) {
-    tabBarItem.title = "Apps"
-    tabBarItem.image = UIImage(systemName: "app.badge.fill")
-  }
-
   deinit {
     if let observer = self.observer {
       NotificationCenter.default.removeObserver(observer)
     }
     observer = nil
   }
+}
 
-  func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
-    viewController.dismiss(animated: true) {
-      if let indexPath = self.tableView.indexPathForSelectedRow {
-        self.tableView.deselectRow(at: indexPath, animated: true)
+extension AppsTableViewController: TabItemable {
+  func configureTabItem(_: UITabBarItem) {
+    tabBarItem.title = "Apps"
+    tabBarItem.image = UIImage(systemName: "app.badge.fill")
+  }
+}
+
+// StoreKit disabled on simulator since there's no App Store
+#if !targetEnvironment(simulator)
+  extension AppsTableViewController: SKStoreProductViewControllerDelegate {
+    func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+      viewController.dismiss(animated: true) {
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+          self.tableView.deselectRow(at: indexPath, animated: true)
+        }
       }
     }
   }
-}
+#endif
