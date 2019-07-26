@@ -24,7 +24,11 @@ class AppsTableViewController: UITableViewController {
   /**
    JSON Decoder for data from api.
    */
-  static let jsonDecoder = JSONDecoder()
+  static let jsonDecoder: JSONDecoder = {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    return decoder
+  }()
 
   /**
    Active Data Task.
@@ -87,8 +91,8 @@ class AppsTableViewController: UITableViewController {
       object: nil, queue: nil, using: onUpdate(notification:)
     )
 
-    let cellNib = UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil)
     // register the UITableViewCell
+    let cellNib = UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil)
     tableView.register(cellNib, forCellReuseIdentifier: AppsTableViewController.reuseIdentifier)
   }
 

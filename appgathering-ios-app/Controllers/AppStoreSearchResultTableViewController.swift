@@ -5,28 +5,74 @@
 //  Created by Leo Dion on 7/15/19.
 //
 
-import StoreKit
+#if !targetEnvironment(simulator)
+  import StoreKit
+#endif
+
 import UIKit
 
-class AppStoreSearchResultTableViewController: UITableViewController, UISearchResultsUpdating, TabItemable, SKStoreProductViewControllerDelegate {
-  let reuseIdentifier = "reuseIdentifier"
-  weak var alertController: UIAlertController?
+/**
+ UITableViewController for displaying the search results from iTunes.
+ */
+class AppStoreSearchResultTableViewController: UITableViewController {
+  /**
+   Reuse Identifier for each UITableViewCell.
+   */
+  static let reuseIdentifier = "reuseIdentifier"
+
+  /**
+   JSON Decoder for data from api.
+   */
+  static let jsonDecoder: JSONDecoder = {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    return decoder
+  }()
+
+  /**
+   The base url components for building a query to iTunes search.
+   */
+  static let baseURLComponents = URLComponents(string: "https://itunes.apple.com/search?entity=software")!
+
+  /**
+   Active Data Task.
+   */
+  var dataTask: URLSessionDataTask?
+
+  /**
+   Access to the activity indicator and overlay.
+   */
   weak var busyView: UIView!
+
+  /**
+   Current error UIAlertController
+   */
+  weak var alertController: UIAlertController?
+
+  /**
+   Tasks whether the user needs to login.
+   */
   var firstLogin = true
-  var task: URLSessionDataTask?
+
+  /**
+   Decoded result from api call or error.
+   */
   var result: Result<[AppleSearchResultItem], Error>? = .success([AppleSearchResultItem]()) {
     didSet {
       DispatchQueue.main.async {
         switch self.result {
         case .none:
+          // show the busy indicator when no result yet
           self.busyView.isHidden = false
         case let .some(.failure(error)):
+          // display alert with error
           self.alertController?.dismiss(animated: true, completion: nil)
           let alertController = UIAlertController(title: "Error Occured", message: error.localizedDescription, preferredStyle: .alert)
           alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
           self.alertController = alertController
           self.present(alertController, animated: true, completion: nil)
         case .some(.success):
+          // hide the activity indicator and dismiss the alert
           self.busyView.isHidden = true
           self.alertController?.dismiss(animated: true) {
             self.alertController = nil
@@ -37,37 +83,60 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     }
   }
 
-  let baseURLComponents = URLComponents(string: "https://itunes.apple.com/search?entity=software")!
-  let jsonDecoder: JSONDecoder = {
-    let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .iso8601
-    return decoder
-  }()
-
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
-    let activityIndicatorView = UIActivityIndicatorView(style: .large)
-    activityIndicatorView.startAnimating()
-    let busyView = UIView(frame: view.bounds)
-    busyView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-    busyView.addSubview(activityIndicatorView)
-    activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-    activityIndicatorView.centerXAnchor.constraint(equalTo: busyView.centerXAnchor).isActive = true
-    activityIndicatorView.centerYAnchor.constraint(equalTo: busyView.centerYAnchor).isActive = true
-    view.addSubview(busyView)
-    busyView.isHidden = true
-    self.busyView = busyView
+
+    // add a busy overlay
+    busyView = view.addBusyView()
+
+    // setup the search controller
+    navigationItem.searchController = setupSearchController()
+    definesPresentationContext = true
+
+    // register the UITableViewCell
+    let cellNib = UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil)
+    tableView.register(cellNib, forCellReuseIdentifier: AppStoreSearchResultTableViewController.reuseIdentifier)
+  }
+
+  /**
+   Setup the search controller.
+   */
+  func setupSearchController() -> UISearchController {
     let searchController = UISearchController(searchResultsController: nil)
     searchController.searchResultsUpdater = self
     searchController.obscuresBackgroundDuringPresentation = false
     searchController.searchBar.placeholder = "Search App Store"
-    navigationItem.searchController = searchController
-    definesPresentationContext = true
-
-    tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
+    return searchController
   }
 
+  // StoreKit disabled on simulator since there's no App Store
+  #if !targetEnvironment(simulator)
+
+    /**
+     Open the App Store Product View for the currently selected product.
+     */
+    func openAppStore(_: UIAlertAction) {
+      guard let indexPath = self.tableView.indexPathForSelectedRow else {
+        return
+      }
+
+      guard let searchItem = (try? result?.get())?[indexPath.row] else {
+        return
+      }
+
+      let storeController = SKStoreProductViewController()
+      storeController.delegate = self
+      storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: searchItem.trackId]) { loaded, _ in
+        if loaded {
+          self.present(storeController, animated: true, completion: nil)
+        }
+      }
+    }
+  #endif
+
+  /**
+   Login if this is the first time the view is available.
+   */
   override func viewDidAppear(_ animated: Bool) {
     if firstLogin {
       let loginViewController = LoginViewController()
@@ -76,63 +145,25 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     }
   }
 
-  func updateSearchResults(for searchController: UISearchController) {
-    guard let term = searchController.searchBar.text else {
-      result = .success([AppleSearchResultItem]())
-      return
-    }
-
-    guard !term.isEmpty else {
-      result = .success([AppleSearchResultItem]())
-      return
-    }
-
-    result = nil
-
-    var urlComponents = baseURLComponents
-
-    urlComponents.queryItems?.append(URLQueryItem(name: "term", value: term))
-
-    let url = urlComponents.url!
-
-    let dataTask = URLSession.shared.dataTask(with: url) { data, _, error in
-      let result: Result<[AppleSearchResultItem], Error>
-
-      if let data = data {
-        do {
-          let searchResult = try self.jsonDecoder.decode(AppleSearchResult.self, from: data)
-          result = .success(searchResult.results)
-        } catch {
-          result = .failure(error)
-        }
-      } else {
-        result = .failure(error ?? NoDataError())
-      }
-
-      self.result = result
-    }
-
-    DispatchQueue.global().async {
-      dataTask.resume()
-    }
-    task = dataTask
-  }
-
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return (try? result?.get())?.count ?? 0
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+    // dequeue the UITableViewCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: AppStoreSearchResultTableViewController.reuseIdentifier, for: indexPath)
 
+    // try to cast as AppStoreSearchResultTableViewCell
     guard let searchResultCell = cell as? AppStoreSearchResultTableViewCell else {
       return cell
     }
 
+    // try to get the search item based on the indexPath
     guard let item = (try? self.result?.get())?[indexPath.row] else {
       return searchResultCell
     }
 
+    // if the product has an image, load the image into the view
     DispatchQueue.global().async {
       guard let data = try? Data(contentsOf: item.artworkUrl512) else {
         return
@@ -148,7 +179,11 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     return searchResultCell
   }
 
+  /**
+   Removes  the currently selected product from the user's app list.
+   */
   func addAction(_: UIAlertAction) {
+    // get the indexPath
     guard let indexPath = self.tableView.indexPathForSelectedRow else {
       return
     }
@@ -167,31 +202,13 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
         return
       }
 
-      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
+      NotificationCenter.default.post(name: NotificationNames.AppCollectionUpdated, object: nil)
 
       DispatchQueue.main.async {
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.busyView.isHidden = true
       }
     }.resume()
-  }
-
-  func openAppStore(_: UIAlertAction) {
-    guard let indexPath = self.tableView.indexPathForSelectedRow else {
-      return
-    }
-
-    guard let searchItem = (try? result?.get())?[indexPath.row] else {
-      return
-    }
-
-    let storeController = SKStoreProductViewController()
-    storeController.delegate = self
-    storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: searchItem.trackId]) { loaded, _ in
-      if loaded {
-        self.present(storeController, animated: true, completion: nil)
-      }
-    }
   }
 
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -225,17 +242,67 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
     return 90.0
   }
+}
 
+extension AppStoreSearchResultTableViewController: UISearchResultsUpdating {
+  /**
+   Update the current table view based on the search term.
+   */
+  func updateSearchResults(for searchController: UISearchController) {
+    self.dataTask?.cancel()
+
+    // get the search term
+    guard let term = searchController.searchBar.text else {
+      result = .success([AppleSearchResultItem]())
+      return
+    }
+
+    // if the search term is empty, do nothing
+    guard !term.isEmpty else {
+      return
+    }
+
+    result = nil
+
+    var urlComponents = AppStoreSearchResultTableViewController.baseURLComponents
+
+    urlComponents.queryItems?.append(URLQueryItem(name: "term", value: term))
+
+    let url = urlComponents.url!
+
+    let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
+
+      self.result = AppsTableViewController.jsonDecoder.decode(AppleSearchResult.self,
+                                                               from: data,
+                                                               withResponse: response,
+                                                               withError: error,
+                                                               elseError: NoDataError()).map { $0.results }
+      self.dataTask = nil
+    }
+
+    DispatchQueue.global().async {
+      dataTask.resume()
+    }
+    self.dataTask = dataTask
+  }
+}
+
+extension AppStoreSearchResultTableViewController: TabItemable {
   func configureTabItem(_ tabItem: UITabBarItem) {
     tabItem.title = "Search"
     tabItem.image = UIImage(systemName: "magnifyingglass")
   }
+}
 
-  func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
-    viewController.dismiss(animated: true) {
-      if let indexPath = self.tableView.indexPathForSelectedRow {
-        self.tableView.deselectRow(at: indexPath, animated: true)
+#if !targetEnvironment(simulator)
+  // StoreKit disabled on simulator since there's no App Store
+  extension AppStoreSearchResultTableViewController: SKStoreProductViewControllerDelegate {
+    func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+      viewController.dismiss(animated: true) {
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+          self.tableView.deselectRow(at: indexPath, animated: true)
+        }
       }
     }
   }
-}
+#endif

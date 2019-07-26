@@ -7,6 +7,9 @@
 
 import UIKit
 extension UITabBarController {
+  /**
+   Convenience initializer which sets up UINavigationController as well as UITabItems.
+   */
   convenience init(navigationRootViewControllers: [UIViewController], animated: Bool = false) {
     self.init()
 
