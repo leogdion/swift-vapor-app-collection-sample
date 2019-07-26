@@ -42,6 +42,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
         case let .some(.failure(error)):
           self.alertController?.dismiss(animated: true, completion: nil)
           let alertController = UIAlertController(title: "Error Occured", message: error.localizedDescription, preferredStyle: .alert)
+          alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
           self.alertController = alertController
           self.present(alertController, animated: true, completion: nil)
         case .some(.success):

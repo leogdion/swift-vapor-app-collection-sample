@@ -42,11 +42,31 @@ class AppsTableViewController: UITableViewController {
   weak var busyView: UIView!
 
   /**
+   Current error UIAlertController
+   */
+  weak var alertController: UIAlertController?
+
+  /**
    Decoded result from api call or error.
    */
   var result: Result<[ProductResponse], Error>? {
     didSet {
       DispatchQueue.main.async {
+        switch self.result {
+        case .none:
+          self.busyView.isHidden = false
+        case let .some(.failure(error)):
+          self.alertController?.dismiss(animated: true, completion: nil)
+          let alertController = UIAlertController(title: "Error Occured", message: error.localizedDescription, preferredStyle: .alert)
+          alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+          self.alertController = alertController
+          self.present(alertController, animated: true, completion: nil)
+        case .some(.success):
+          self.busyView.isHidden = true
+          self.alertController?.dismiss(animated: true) {
+            self.alertController = nil
+          }
+        }
         self.tableView.reloadData()
       }
     }
@@ -73,8 +93,8 @@ class AppsTableViewController: UITableViewController {
       return
     }
 
-    let task = URLSession.shared.dataTask(with: request) { data, _, error in
-      self.result = AppsTableViewController.jsonDecoder.decode([ProductResponse].self, from: data, withError: error, elseError: NoDataError())
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+      self.result = AppsTableViewController.jsonDecoder.decode([ProductResponse].self, from: data, withResponse: response, withError: error, elseError: NoDataError())
       DispatchQueue.main.async {
         self.busyView.isHidden = true
       }
