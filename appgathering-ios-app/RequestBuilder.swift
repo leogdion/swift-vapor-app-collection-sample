@@ -8,8 +8,26 @@
 import Foundation
 
 protocol RequestBuilderProtocol {
+  var jsonEncoder: JSONEncoder { get }
+
   func save(baseUrl: URL, forUserWithId userId: UUID)
-  func request(withPath path: String, andMethod httpMethod: String) throws -> URLRequest?
+
+  func request(usingBaseUrl baseUrl: URL?, withPath path: String, andMethod httpMethod: String, andData data: Data?) throws -> URLRequest?
+}
+
+extension RequestBuilderProtocol {
+  func request(usingBaseUrl baseUrl: URL? = nil, withPath path: String, andMethod httpMethod: String, andData data: Data? = nil) throws -> URLRequest? {
+    return try request(usingBaseUrl: baseUrl, withPath: path, andMethod: httpMethod, andData: data)
+  }
+
+  func request(withPath path: String, andMethod httpMethod: String) throws -> URLRequest? {
+    return try request(usingBaseUrl: nil, withPath: path, andMethod: httpMethod, andData: nil)
+  }
+
+  func request<T: Encodable>(usingBaseUrl baseUrl: URL? = nil, withPath path: String, andMethod httpMethod: String, andBody body: T) throws -> URLRequest? {
+    let data = try jsonEncoder.encode(body)
+    return try request(usingBaseUrl: baseUrl, withPath: path, andMethod: httpMethod, andData: data)
+  }
 }
 
 final class RequestBuilder: RequestBuilderProtocol {
@@ -28,8 +46,8 @@ final class RequestBuilder: RequestBuilderProtocol {
     UserDefaults.standard.set(userId.uuidString, forKey: "userId")
   }
 
-  func request(withPath path: String, andMethod httpMethod: String) throws -> URLRequest? {
-    guard var url = self.baseUrl else {
+  func request(usingBaseUrl baseUrl: URL?, withPath path: String, andMethod httpMethod: String, andData data: Data?) throws -> URLRequest? {
+    guard var url = baseUrl ?? self.baseUrl else {
       return nil
     }
 
@@ -42,6 +60,8 @@ final class RequestBuilder: RequestBuilderProtocol {
     if let userId = self.userId {
       urlRequest.addValue(userId.uuidString, forHTTPHeaderField: "X-User-Id")
     }
+
+    urlRequest.httpBody = data
 
     return urlRequest
   }

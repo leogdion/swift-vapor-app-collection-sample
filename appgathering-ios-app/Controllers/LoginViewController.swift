@@ -53,37 +53,18 @@ class LoginViewController: UIViewController {
       return
     }
 
-    var urlComponents = baseUrlComponents
-
-    urlComponents.path = "/users"
-
-    guard let url = urlComponents.url else {
+    guard let urlRequest = try? RequestBuilder.shared.request(usingBaseUrl: baseUrl, withPath: "/users", andMethod: "POST", andBody: SignupRequest(name: userName)) else {
       return
     }
+    let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 
-    let jsonEncoder = JSONEncoder()
+      let result = self.jsonDecoder.decode(UserResponse.self, from: data, withResponse: response, withError: error, elseError: NoDataError())
 
-    guard let body = try? jsonEncoder.encode(SignupRequest(name: userName)) else {
-      return
-    }
-
-    var urlRequest = URLRequest(url: url)
-    urlRequest.httpMethod = "POST"
-    urlRequest.httpBody = body
-    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
-      if error != nil {
+      guard let userResponse = try? result.get() else {
         return
       }
-      guard let data = data else {
-        return
-      }
-      guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
-        return
-      }
+
       RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
-//      UserDefaults.standard.set(userResponse.id.uuidString, forKey: "userId")
-//      UserDefaults.standard.set(self.urlComponents?.url, forKey: "baseUrl")
 
       DispatchQueue.main.async {
         self.dismiss(animated: true, completion: nil)
@@ -107,27 +88,16 @@ class LoginViewController: UIViewController {
     guard let baseUrl = baseUrlComponents.url else {
       return
     }
-    var urlComponents = baseUrlComponents
-    urlComponents.path = "/users/\(userName)"
-
-    guard let url = urlComponents.url else {
+    guard let urlRequest = try? RequestBuilder.shared.request(usingBaseUrl: baseUrl, withPath: "/users/\(userName)", andMethod: "GET") else {
       return
     }
+    let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+      let result = self.jsonDecoder.decode(UserResponse.self, from: data, withResponse: response, withError: error, elseError: NoDataError())
 
-    var urlRequest = URLRequest(url: url)
-    urlRequest.httpMethod = "GET"
-    urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
-      if error != nil {
+      guard let userResponse = try? result.get() else {
         return
       }
 
-      guard let data = data else {
-        return
-      }
-      guard let userResponse = try? self.jsonDecoder.decode(UserResponse.self, from: data) else {
-        return
-      }
       RequestBuilder.shared.save(baseUrl: baseUrl, forUserWithId: userResponse.id)
       DispatchQueue.main.async {
         self.dismiss(animated: true, completion: nil)
