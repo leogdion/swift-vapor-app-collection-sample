@@ -54,14 +54,17 @@ class AppsTableViewController: UITableViewController {
       DispatchQueue.main.async {
         switch self.result {
         case .none:
+          // show the busy indicator when no result yet
           self.busyView.isHidden = false
         case let .some(.failure(error)):
+          // display alert with error
           self.alertController?.dismiss(animated: true, completion: nil)
           let alertController = UIAlertController(title: "Error Occured", message: error.localizedDescription, preferredStyle: .alert)
           alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
           self.alertController = alertController
           self.present(alertController, animated: true, completion: nil)
         case .some(.success):
+          // hide the activity indicator and dismiss the alert
           self.busyView.isHidden = true
           self.alertController?.dismiss(animated: true) {
             self.alertController = nil
@@ -84,35 +87,49 @@ class AppsTableViewController: UITableViewController {
       object: nil, queue: nil, using: onUpdate(notification:)
     )
 
+    let cellNib = UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil)
     // register the UITableViewCell
-    tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: AppsTableViewController.reuseIdentifier)
+    tableView.register(cellNib, forCellReuseIdentifier: AppsTableViewController.reuseIdentifier)
   }
 
-  func begin() {
+  /**
+   Update the current table view.
+   */
+  func beginUpdate() {
+    // build the request for listing the products
     guard let request = try? RequestBuilder.shared.request(withPath: "/products", andMethod: "GET") else {
       return
     }
 
+    // start the call to the API
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-      self.result = AppsTableViewController.jsonDecoder.decode([ProductResponse].self, from: data, withResponse: response, withError: error, elseError: NoDataError())
-      DispatchQueue.main.async {
-        self.busyView.isHidden = true
-      }
+      // decode the result
+      self.result = AppsTableViewController.jsonDecoder.decode([ProductResponse].self,
+                                                               from: data,
+                                                               withResponse: response,
+                                                               withError: error,
+                                                               elseError: NoDataError())
       self.dataTask = nil
     }
     dataTask = task
     task.resume()
   }
 
+  /**
+   When the notification is received then update the list.
+   */
   func onUpdate(notification _: Notification) {
-    begin()
+    beginUpdate()
   }
 
+  /**
+   Update the list the first time the view appears.
+   */
   override func viewDidAppear(_: Bool) {
     guard dataTask == nil, result == nil else {
       return
     }
-    begin()
+    beginUpdate()
   }
 
   // MARK: - Table view data source
@@ -123,36 +140,43 @@ class AppsTableViewController: UITableViewController {
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // dequeue the UITableViewCell
     let cell = tableView.dequeueReusableCell(withIdentifier: AppsTableViewController.reuseIdentifier, for: indexPath)
 
-    guard let searchResultCell = cell as? AppStoreSearchResultTableViewCell else {
+    // try to cast as AppStoreSearchResultTableViewCell
+    guard let productCell = cell as? AppStoreSearchResultTableViewCell else {
       return cell
     }
 
-    guard let item = (try? self.result?.get())?[indexPath.row] else {
-      return searchResultCell
+    // try to get the product based on the indexPath
+    guard let product = (try? self.result?.get())?[indexPath.row] else {
+      return productCell
     }
 
-    if let sourceImageUrl = item.sourceImageUrl {
+    // if the product has an image, load the image into the view
+    if let sourceImageUrl = product.sourceImageUrl {
       DispatchQueue.global().async {
         guard let data = try? Data(contentsOf: sourceImageUrl) else {
           return
         }
         DispatchQueue.main.async {
-          searchResultCell.artworkView.image = UIImage(data: data)
+          productCell.artworkView.image = UIImage(data: data)
         }
       }
     }
-    // loadArtwork(fromUrl: item.artworkUrl512, forCellAtIndexPath: indexPath)
 
-    searchResultCell.nameLabel.text = item.name
-    searchResultCell.subtitleLabel.text = "by \(item.developer.name)"
+    productCell.nameLabel.text = product.name
+    productCell.subtitleLabel.text = "by \(product.developer.name)"
 
-    return searchResultCell
+    return productCell
   }
 
   // StoreKit disabled on simulator since there's no App Store
   #if !targetEnvironment(simulator)
+
+    /**
+     Open the App Store Product View for the currently selected product.
+     */
     func openAppStore(_: UIAlertAction) {
       guard let indexPath = self.tableView.indexPathForSelectedRow else {
         return
@@ -168,7 +192,10 @@ class AppsTableViewController: UITableViewController {
 
       let storeController = SKStoreProductViewController()
       storeController.delegate = self
+
+      // load the product into the the Store Product View
       storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: trackId]) { loaded, _ in
+        // if loaded present the Store Product View
         if loaded {
           self.present(storeController, animated: true, completion: nil)
         }
@@ -176,7 +203,11 @@ class AppsTableViewController: UITableViewController {
     }
   #endif
 
+  /**
+   Removes  the currently selected product from the user's app list.
+   */
   func removeAction(_: UIAlertAction) {
+    // get the indexPath
     guard let indexPath = self.tableView.indexPathForSelectedRow else {
       return
     }
@@ -203,6 +234,9 @@ class AppsTableViewController: UITableViewController {
     }.resume()
   }
 
+  /**
+   Displays an action sheet when the user selects a product.
+   */
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let product = (try? result?.get())?[indexPath.row] else {
       return
@@ -211,6 +245,8 @@ class AppsTableViewController: UITableViewController {
     let alertController = UIAlertController(title: product.name, message: "What would you like to do?", preferredStyle: .actionSheet)
 
     alertController.addAction(UIAlertAction(title: "Remove App", style: .destructive, handler: removeAction))
+
+    // If the app has a web site, allow the user to open the web site url.
 
     if let url = product.url {
       alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: { _ in
@@ -221,6 +257,8 @@ class AppsTableViewController: UITableViewController {
     }
     // StoreKit disabled on simulator since there's no App Store
     #if !targetEnvironment(simulator)
+
+      // if the product has an app store page, allow the user to show the product page
       if product.appleSoftware?.trackId != nil {
         alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
       }
@@ -238,6 +276,7 @@ class AppsTableViewController: UITableViewController {
   }
 
   deinit {
+    // remove the observer when the view is deinitialized
     if let observer = self.observer {
       NotificationCenter.default.removeObserver(observer)
     }
