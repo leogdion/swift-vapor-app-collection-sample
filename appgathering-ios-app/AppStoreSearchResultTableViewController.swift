@@ -186,7 +186,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       }
 
       NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
-      
+
       DispatchQueue.main.async {
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.busyView.isHidden = true
@@ -222,10 +222,8 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     alertController.addAction(UIAlertAction(title: "Add App", style: .destructive, handler: addAction))
 
     if let url = searchItem.sellerUrl {
-      alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: {
-        _ in
-        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: {
-          _ in
+      alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: { _ in
+        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: { _ in
           self.tableView.deselectRow(at: indexPath, animated: true)
         })
       }))
@@ -235,8 +233,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
     #endif
 
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {
-      _ in
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
       self.tableView.deselectRow(at: indexPath, animated: true)
     }))
 

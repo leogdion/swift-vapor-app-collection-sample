@@ -21,11 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		B338926922EA9C1500BBEEC0 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = B338926822EA9C1500BBEEC0 /* Request.swift */; };
 		B38F0F6A22E90661008E3D0A /* AppleSoftwareProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6622E90661008E3D0A /* AppleSoftwareProductInfo.swift */; };
 		B38F0F6B22E90661008E3D0A /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6722E90661008E3D0A /* ProductResponse.swift */; };
 		B38F0F6C22E90661008E3D0A /* DeveloperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */; };
 		B38F0F6D22E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */; };
-		B38F0F7D22E9D57C008E3D0A /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7C22E9D57C008E3D0A /* UserRequest.swift */; };
 		OBJ_1000 /* PlatformController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* PlatformController.swift */; };
 		OBJ_1001 /* ProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ProductController.swift */; };
 		OBJ_1002 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* UserController.swift */; };
@@ -5257,11 +5257,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B338926822EA9C1500BBEEC0 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Request.swift; path = "../../../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Extensions/Request.swift"; sourceTree = "<group>"; };
 		B38F0F6622E90661008E3D0A /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareProductInfo.swift; sourceTree = "<group>"; };
 		B38F0F6722E90661008E3D0A /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
 		B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperResponse.swift; sourceTree = "<group>"; };
 		B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareDeveloperInfo.swift; sourceTree = "<group>"; };
-		B38F0F7C22E9D57C008E3D0A /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserRequest.swift; path = "../../../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/UserRequest.swift"; sourceTree = "<group>"; };
 		"Console::Command::Product" /* Command.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Command.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Console::Console::Product" /* Console.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Console.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Console::Logging::Product" /* Logging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Logging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6948,6 +6948,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B338926722EA9C0400BBEEC0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B338926822EA9C1500BBEEC0 /* Request.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		OBJ_118 /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
@@ -6994,18 +7002,18 @@
 		OBJ_14 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
-				B38F0F6622E90661008E3D0A /* AppleSoftwareProductInfo.swift */,
-				B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */,
-				B38F0F6722E90661008E3D0A /* ProductResponse.swift */,
 				OBJ_15 /* AppleSearchResult.swift */,
 				OBJ_16 /* AppleSearchResultItem.swift */,
 				OBJ_17 /* AppleSoftwareDeveloper.swift */,
+				B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
 				OBJ_19 /* AppleSoftwareProduct.swift */,
+				B38F0F6622E90661008E3D0A /* AppleSoftwareProductInfo.swift */,
 				OBJ_21 /* Developer.swift */,
+				B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */,
 				OBJ_23 /* Platform.swift */,
 				OBJ_24 /* Product.swift */,
 				OBJ_25 /* ProductPlatform.swift */,
+				B38F0F6722E90661008E3D0A /* ProductResponse.swift */,
 				OBJ_27 /* User.swift */,
 				OBJ_28 /* UserProduct.swift */,
 			);
@@ -8814,6 +8822,7 @@
 		OBJ_8 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				B338926722EA9C0400BBEEC0 /* Extensions */,
 				OBJ_9 /* Controllers */,
 				OBJ_14 /* Models */,
 				OBJ_29 /* app.swift */,
@@ -9085,7 +9094,6 @@
 		OBJ_9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B38F0F7C22E9D57C008E3D0A /* UserRequest.swift */,
 				OBJ_10 /* AppleSoftwareProductController.swift */,
 				OBJ_11 /* PlatformController.swift */,
 				OBJ_12 /* ProductController.swift */,
@@ -10434,6 +10442,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_995 /* Build configuration list for PBXNativeTarget "App" */;
 			buildPhases = (
+				B338926622EA9A5B00BBEEC0 /* swiftformat */,
+				B338926A22EA9CE900BBEEC0 /* swiftlint */,
 				OBJ_998 /* Sources */,
 				OBJ_1021 /* Frameworks */,
 			);
@@ -11037,6 +11047,45 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B338926622EA9A5B00BBEEC0 /* swiftformat */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftformat;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat Sources --swiftversion 5 \nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+		B338926A22EA9CE900BBEEC0 /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_1155 /* Sources */ = {
@@ -12212,12 +12261,12 @@
 				OBJ_999 /* AppleSoftwareProductController.swift in Sources */,
 				OBJ_1000 /* PlatformController.swift in Sources */,
 				B38F0F6A22E90661008E3D0A /* AppleSoftwareProductInfo.swift in Sources */,
-				B38F0F7D22E9D57C008E3D0A /* UserRequest.swift in Sources */,
 				OBJ_1001 /* ProductController.swift in Sources */,
 				B38F0F6D22E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */,
 				OBJ_1002 /* UserController.swift in Sources */,
 				OBJ_1003 /* AppleSearchResult.swift in Sources */,
 				OBJ_1004 /* AppleSearchResultItem.swift in Sources */,
+				B338926922EA9C1500BBEEC0 /* Request.swift in Sources */,
 				B38F0F6C22E90661008E3D0A /* DeveloperResponse.swift in Sources */,
 				OBJ_1005 /* AppleSoftwareDeveloper.swift in Sources */,
 				OBJ_1007 /* AppleSoftwareProduct.swift in Sources */,

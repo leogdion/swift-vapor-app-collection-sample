@@ -42,7 +42,14 @@ public func configure(_: inout Config, _: inout Environment, _ services: inout S
       port = PostgresDefaults.port
     }
 
-    postgreSQLConfig = PostgreSQLDatabaseConfig(hostname: hostname, port: port, username: username, database: database, password: password, transport: .cleartext)
+    postgreSQLConfig = PostgreSQLDatabaseConfig(
+      hostname: hostname,
+      port: port,
+      username: username,
+      database: database,
+      password: password,
+      transport: .cleartext
+    )
   }
   let postgreSQL = PostgreSQLDatabase(config: postgreSQLConfig)
 

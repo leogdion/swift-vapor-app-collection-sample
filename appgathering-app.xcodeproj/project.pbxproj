@@ -26,7 +26,6 @@
 		B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */; };
 		B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */; };
 		B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */; };
-		B38F0F8F22E9DD91008E3D0A /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,7 +51,6 @@
 		B38F0F7122E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppleSoftwareDeveloperInfo.swift; path = "app-gathering-app-server/Sources/App/Models/AppleSoftwareDeveloperInfo.swift"; sourceTree = SOURCE_ROOT; };
 		B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsTableViewController.swift; sourceTree = "<group>"; };
-		B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserRequest.swift; path = "app-gathering-app-server/Sources/App/Models/UserRequest.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +88,6 @@
 				B38F0F7022E90672008E3D0A /* ProductResponse.swift */,
 				B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */,
 				B310234322DCF68900B56685 /* SceneDelegate.swift */,
-				B38F0F8E22E9DD91008E3D0A /* UserRequest.swift */,
 			);
 			path = "appgathering-ios-app";
 			sourceTree = "<group>";
@@ -226,7 +223,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat appgathering-ios-app\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat appgathering-ios-app --swiftversion 5\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -243,7 +240,6 @@
 				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,
 				B342C7F322DF724E00D69A6A /* AppleSearchResultItem.swift in Sources */,
 				B38F0F8B22E9DBC2008E3D0A /* RequestBuilder.swift in Sources */,
-				B38F0F8F22E9DD91008E3D0A /* UserRequest.swift in Sources */,
 				B336088F22DD696B00ADEEFF /* NoDataError.swift in Sources */,
 				B38F0F7322E90672008E3D0A /* DeveloperResponse.swift in Sources */,
 				B38F0F7522E90672008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */,

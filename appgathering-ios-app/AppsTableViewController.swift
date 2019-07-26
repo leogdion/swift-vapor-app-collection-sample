@@ -62,7 +62,10 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // navigationItem.rightBarButtonItem = editButtonItem
-    observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil, queue: nil, using: onUpdate(notification:))
+    observer = NotificationCenter.default.addObserver(
+      forName: NSNotification.Name(rawValue: "AppCollectionUpdated"),
+      object: nil, queue: nil, using: onUpdate(notification:)
+    )
 
     tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
   }
@@ -189,10 +192,8 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
     alertController.addAction(UIAlertAction(title: "Remove App", style: .destructive, handler: removeAction))
 
     if let url = product.url {
-      alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: {
-        _ in
-        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: {
-          _ in
+      alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: { _ in
+        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: { _ in
           self.tableView.deselectRow(at: indexPath, animated: true)
         })
       }))
@@ -204,8 +205,7 @@ class AppsTableViewController: UITableViewController, TabItemable, SKStoreProduc
       }
     #endif
 
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {
-      _ in
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
       self.tableView.deselectRow(at: indexPath, animated: true)
     }))
 

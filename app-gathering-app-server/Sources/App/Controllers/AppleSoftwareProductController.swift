@@ -8,60 +8,6 @@
 import FluentPostgreSQL
 import Vapor
 
-extension DeveloperResponse {
-  static func future(from developerPair: Future<(Developer, AppleSoftwareDeveloper)>) -> Future<DeveloperResponse> {
-    return developerPair.map { developer, appleSoftwareDeveloper in
-      let apswDeveloperInfo = AppleSoftwareDeveloperInfo(artistId: appleSoftwareDeveloper.artistId)
-      return DeveloperResponse(id: try developer.requireID(), name: developer.name, appleSoftware: apswDeveloperInfo)
-    }
-  }
-}
-
-extension ProductResponse {
-  static func future(from product: Product, on connection: DatabaseConnectable) throws -> Future<ProductResponse> {
-    let productId = try product.requireID()
-    let appleSoftwareProductF = try product.appleSoftware.query(on: connection).first()
-    let developerF = product.developer.query(on: connection).first().unwrap(or: Abort(HTTPResponseStatus.internalServerError))
-
-    let platformNamesF = try product.platforms.query(on: connection).all().map { $0.map { $0.name } }
-
-    let appleSoftwareDeveloperF = try developerF.flatMap { try $0.appleSoftware.query(on: connection).first() }
-
-    return developerF.and(appleSoftwareProductF.and(appleSoftwareDeveloperF)).and(platformNamesF).map { components in
-      let ((developer, (appleSoftwareProduct, appleSoftwareDeveloper)), platformNames) = components
-
-      let appleSoftwareDeveloperInfo =
-        appleSoftwareDeveloper.map { AppleSoftwareDeveloperInfo(artistId: $0.artistId) }
-      let appleSoftwareProductInfo = appleSoftwareProduct.map {
-        AppleSoftwareProductInfo(trackId: $0.trackId, bundleId: $0.bundleId)
-      }
-      let developerResponse = try DeveloperResponse(id: developer.requireID(), name: developer.name, appleSoftware: appleSoftwareDeveloperInfo)
-
-      return ProductResponse(id: productId, name: product.name, url: product.url, sourceImageUrl: product.sourceImageUrl, platforms: platformNames, developer: developerResponse, appleSoftware: appleSoftwareProductInfo)
-    }
-  }
-
-  static func future(from productPair: Future<(Product, AppleSoftwareProduct)>, withDeveloper developerResponseF: Future<DeveloperResponse>, withPlatforms platformsF: Future<[Platform]>) -> Future<ProductResponse> {
-    let platformNamesF = platformsF.map {
-      $0.map {
-        $0.name
-      }
-    }
-
-    return productPair.and(developerResponseF).and(platformNamesF).map { components in
-      let product = components.0.0.0
-      let appleSoftwareProduct = components.0.0.1
-      let developerResponse = components.0.1
-      let platformNames = components.1
-
-      let productId = try product.requireID()
-      let appleSoftware = AppleSoftwareProductInfo(trackId: appleSoftwareProduct.trackId, bundleId: appleSoftwareProduct.bundleId)
-
-      return ProductResponse(id: productId, name: product.name, url: product.url, sourceImageUrl: product.sourceImageUrl, platforms: platformNames, developer: developerResponse, appleSoftware: appleSoftware)
-    }
-  }
-}
-
 final class AppleSoftwareProductController {
   let platformController: PlatformController
   let urlComponents = URLComponents(string: "https://itunes.apple.com/lookup?")!
@@ -96,8 +42,7 @@ final class AppleSoftwareProductController {
   }
 
   func developer(basedOnProduct resultItem: AppleSearchResultItem, on req: DatabaseConnectable) -> Future<(Developer, AppleSoftwareDeveloper)> {
-    return AppleSoftwareDeveloper.query(on: req).filter(\.artistId == resultItem.artistId).first().flatMap {
-      foundApswDeveloper in
+    return AppleSoftwareDeveloper.query(on: req).filter(\.artistId == resultItem.artistId).first().flatMap { foundApswDeveloper in
       let apswDeveloperFuture: EventLoopFuture<AppleSoftwareDeveloper>
       let developerFuture: EventLoopFuture<Developer>
       if let actualApswDeveloper = foundApswDeveloper {
@@ -116,7 +61,12 @@ final class AppleSoftwareProductController {
     }
   }
 
-  func product(upsertBasedOn resultItem: AppleSearchResultItem, withiTunesArtist _: AppleSoftwareDeveloper, andDeveloper developer: Developer, on req: DatabaseConnectable) throws -> Future<(Product, AppleSoftwareProduct)> {
+  func product(
+    upsertBasedOn resultItem: AppleSearchResultItem,
+    withiTunesArtist _: AppleSoftwareDeveloper,
+    andDeveloper developer: Developer,
+    on req: DatabaseConnectable
+  ) throws -> Future<(Product, AppleSoftwareProduct)> {
     return AppleSoftwareProduct.query(on: req).filter(\.trackId == resultItem.trackId).first().flatMap { foundApswProduct in
       let productFuture: EventLoopFuture<Product>
       let apswProductFuture: EventLoopFuture<AppleSoftwareProduct>
@@ -129,7 +79,12 @@ final class AppleSoftwareProductController {
           return product.update(on: req)
         }
       } else {
-        productFuture = Product(developerId: try developer.requireID(), name: resultItem.trackName, url: resultItem.sellerUrl, sourceImageUrl: resultItem.artworkUrl512).save(on: req)
+        productFuture = Product(
+          developerId: try developer.requireID(),
+          name: resultItem.trackName,
+          url: resultItem.sellerUrl,
+          sourceImageUrl: resultItem.artworkUrl512
+        ).save(on: req)
         apswProductFuture = productFuture.flatMap { product in
           try AppleSoftwareProduct(trackId: resultItem.trackId, productId: product.requireID(), bundleId: resultItem.bundleId).save(on: req)
         } //
@@ -138,10 +93,13 @@ final class AppleSoftwareProductController {
     }
   }
 
-  func platforms(upsertBasedOn platformsF: EventLoopFuture<[Platform]>, forProduct product: Product, on req: DatabaseConnectable) throws -> EventLoopFuture<[Platform]> {
+  func platforms(
+    upsertBasedOn platformsF: EventLoopFuture<[Platform]>,
+    forProduct product: Product,
+    on req: DatabaseConnectable
+  ) throws -> EventLoopFuture<[Platform]> {
     return try product.platforms.pivots(on: req).all()
-      .and(platformsF).flatMap {
-        platformsPair in
+      .and(platformsF).flatMap { platformsPair in
         let currentProdPlat = platformsPair.0
         let platformsFuture = platformsPair.1
         let deletingProductPlatforms = try currentProdPlat.filter { (productPlatform) -> Bool in
@@ -165,7 +123,6 @@ final class AppleSoftwareProductController {
   }
 
   func create(_ req: Request) throws -> Future<ProductResponse> {
-
     let userF = try req.user()
     let iTunesTrackID = try req.parameters.next(Int.self)
     let iTunesProduct = try product(lookupByTrackId: iTunesTrackID, on: req).unwrap(or: Abort(HTTPStatus.notFound))
@@ -190,19 +147,18 @@ final class AppleSoftwareProductController {
       }
       let developerResponseF = DeveloperResponse.future(from: developerFuture)
       return userF.and(productFuture).flatMap { userAndProduct -> Future<Void> in
-            let user = userAndProduct.0
-            let product = userAndProduct.1.0
+        let user = userAndProduct.0
+        let product = userAndProduct.1.0
         return user.products.isAttached(product, on: req).flatMap { (isAttached) -> Future<Void> in
           guard !isAttached else {
             return req.future()
           }
           return user.products.attach(product, on: req).transform(to: req.future())
         }
-             
-      }.then {_ in 
-        return ProductResponse.future(from: productFuture, withDeveloper: developerResponseF, withPlatforms: platformsFuture)
+
+      }.then { _ in
+        ProductResponse.future(from: productFuture, withDeveloper: developerResponseF, withPlatforms: resultingSaves)
       }
-      
     }
   }
 }

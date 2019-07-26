@@ -32,7 +32,8 @@ class LoginViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    if let serverUrl = ProcessInfo.processInfo.environment["DEFAULT_SERVER"].flatMap(URL.init(string:)) ?? UserDefaults.standard.url(forKey: "baseUrl") {
+    if let serverUrl = ProcessInfo.processInfo.environment["DEFAULT_SERVER"]
+      .flatMap(URL.init(string:)) ?? UserDefaults.standard.url(forKey: "baseUrl") {
       urlTextField.text = serverUrl.absoluteString
     }
 
@@ -41,7 +42,7 @@ class LoginViewController: UIViewController {
       return
     }
 
-    guard let id = UUID(uuidString: idString) else {
+    guard UUID(uuidString: idString) != nil else {
       return
     }
 
@@ -80,7 +81,7 @@ class LoginViewController: UIViewController {
     urlRequest.httpBody = body
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
     let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
-      if let error = error {
+      if error != nil {
         return
       }
       guard let data = data else {
@@ -126,7 +127,7 @@ class LoginViewController: UIViewController {
     urlRequest.httpMethod = "GET"
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
     let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
-      if let error = error {
+      if error != nil {
         return
       }
 
