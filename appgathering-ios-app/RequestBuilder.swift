@@ -30,7 +30,7 @@ extension RequestBuilderProtocol {
   }
 }
 
-final class RequestBuilder: RequestBuilderProtocol {
+struct RequestBuilder: RequestBuilderProtocol {
   let jsonEncoder = JSONEncoder()
 
   var baseUrl: URL? {
