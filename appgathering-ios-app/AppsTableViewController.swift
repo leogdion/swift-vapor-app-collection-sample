@@ -31,6 +31,8 @@ class AppsTableViewController: UITableViewController, TabItemable {
   var loaded = false
   let jsonDecoder = JSONDecoder()
   var observer: NSObjectProtocol?
+
+  weak var busyView: UIView!
   let reuseIdentifier = "reuseIdentifier"
   var result: Result<[ProductResponse], Error>? {
     didSet {
@@ -46,8 +48,19 @@ class AppsTableViewController: UITableViewController, TabItemable {
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = false
 
+    let activityIndicatorView = UIActivityIndicatorView(style: .large)
+    activityIndicatorView.startAnimating()
+    let busyView = UIView(frame: view.bounds)
+    busyView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+    busyView.addSubview(activityIndicatorView)
+    activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+    activityIndicatorView.centerXAnchor.constraint(equalTo: busyView.centerXAnchor).isActive = true
+    activityIndicatorView.centerYAnchor.constraint(equalTo: busyView.centerYAnchor).isActive = true
+    view.addSubview(busyView)
+    self.busyView = busyView
+
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    // navigationItem.rightBarButtonItem = editButtonItem
     observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil, queue: nil, using: onUpdate(notification:))
 
     tableView.register(UINib(nibName: "AppStoreSearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
@@ -60,6 +73,10 @@ class AppsTableViewController: UITableViewController, TabItemable {
 
     URLSession.shared.dataTask(with: request) { data, _, error in
       self.result = self.jsonDecoder.decode([ProductResponse].self, from: data, withError: error, elseError: NoDataError())
+      DispatchQueue.main.async {
+        self.busyView.isHidden = true
+      }
+
     }.resume()
   }
 
@@ -112,58 +129,69 @@ class AppsTableViewController: UITableViewController, TabItemable {
     return searchResultCell
   }
 
-  override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-    return 90.0
+  func removeAction(_: UIAlertAction) {
+    guard let indexPath = self.tableView.indexPathForSelectedRow else {
+      return
+    }
+
+    guard let product = (try? result?.get())?[indexPath.row] else {
+      return
+    }
+    guard let request =
+      try? RequestBuilder.shared.request(withPath: "/products/\(product.id)", andMethod: "DELETE") else {
+      return
+    }
+    busyView.isHidden = false
+    URLSession.shared.dataTask(with: request) { _, _, error in
+      guard error == nil else {
+        return
+      }
+
+      DispatchQueue.main.async {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        self.busyView.isHidden = true
+      }
+
+      // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
+    }.resume()
   }
 
-//  override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt _: IndexPath) -> UISwipeActionsConfiguration? {}
-//
-//  override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt _: IndexPath) -> UISwipeActionsConfiguration? {}
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let product = (try? result?.get())?[indexPath.row] else {
+      return
+    }
 
-  /*
-   // Override to support conditional editing of the table view.
-   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-       // Return false if you do not want the specified item to be editable.
-       return true
-   }
-   */
+    let alertController = UIAlertController(title: product.name, message: "What would you like to do?", preferredStyle: .actionSheet)
 
-  /*
-   // Override to support editing the table view.
-   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-       if editingStyle == .delete {
-           // Delete the row from the data source
-           tableView.deleteRows(at: [indexPath], with: .fade)
-       } else if editingStyle == .insert {
-           // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-       }
-   }
-   */
+    alertController.addAction(UIAlertAction(title: "Remove App", style: .destructive, handler: removeAction))
 
-  /*
-   // Override to support rearranging the table view.
-   override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+    if let url = product.url {
+      alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: {
+        _ in
+        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: {
+          _ in
+          self.tableView.deselectRow(at: indexPath, animated: true)
+        })
+      }))
+    }
 
-   }
-   */
+    #if !targetEnvironment(simulator)
+      if product.appleSoftware?.trackId != nil {
+        alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
+      }
+    #endif
 
-  /*
-   // Override to support conditional rearranging of the table view.
-   override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-       // Return false if you do not want the item to be re-orderable.
-       return true
-   }
-   */
+    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {
+      _ in
+      self.tableView.deselectRow(at: indexPath, animated: true)
+    }))
 
-  /*
-   // MARK: - Navigation
+    present(alertController, animated: true, completion: nil)
+  }
 
-   // In a storyboard-based application, you will often want to do a little preparation before navigation
-   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       // Get the new view controller using segue.destination.
-       // Pass the selected object to the new view controller.
-   }
-   */
+  override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
+    return 120.0
+  }
 
   func configureTabItem(_: UITabBarItem) {
     tabBarItem.title = "Apps"

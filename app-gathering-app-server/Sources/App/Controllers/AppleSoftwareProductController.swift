@@ -104,7 +104,7 @@ final class AppleSoftwareProductController {
         apswDeveloperFuture = req.future(actualApswDeveloper)
         developerFuture = actualApswDeveloper.developer.get(on: req).flatMap { developer in
           developer.name = resultItem.artistName
-          return developer.save(on: req)
+          return developer.update(on: req)
         }
       } else {
         developerFuture = Developer(name: resultItem.artistName, url: resultItem.sellerUrl).save(on: req)
@@ -122,14 +122,14 @@ final class AppleSoftwareProductController {
       let apswProductFuture: EventLoopFuture<AppleSoftwareProduct>
       if let actualApswProduct = foundApswProduct {
         actualApswProduct.bundleId = resultItem.bundleId
-        apswProductFuture = actualApswProduct.save(on: req)
+        apswProductFuture = actualApswProduct.update(on: req)
         productFuture = actualApswProduct.product.get(on: req).flatMap { product in
           product.name = resultItem.trackName
           product.sourceImageUrl = resultItem.artworkUrl512
-          return product.save(on: req)
+          return product.update(on: req)
         }
       } else {
-        productFuture = Product(developerId: try developer.requireID(), name: resultItem.trackName, sourceImageUrl: resultItem.artworkUrl512).save(on: req)
+        productFuture = Product(developerId: try developer.requireID(), name: resultItem.trackName, url: resultItem.sellerUrl, sourceImageUrl: resultItem.artworkUrl512).save(on: req)
         apswProductFuture = productFuture.flatMap { product in
           try AppleSoftwareProduct(trackId: resultItem.trackId, productId: product.requireID(), bundleId: resultItem.bundleId).save(on: req)
         } //
@@ -189,10 +189,16 @@ final class AppleSoftwareProductController {
         try self.platforms(upsertBasedOn: platformsFuture, forProduct: $0.0, on: req)
       }
       let developerResponseF = DeveloperResponse.future(from: developerFuture)
-      return userF.and(productFuture).flatMap { userAndProduct -> Future<UserProduct> in
+      return userF.and(productFuture).flatMap { userAndProduct -> Future<Void> in
             let user = userAndProduct.0
             let product = userAndProduct.1.0
-            return user.products.attach(product, on: req)
+        return user.products.isAttached(product, on: req).flatMap { (isAttached) -> Future<Void> in
+          guard !isAttached else {
+            return req.future()
+          }
+          return user.products.attach(product, on: req).transform(to: req.future())
+        }
+             
       }.then {_ in 
         return ProductResponse.future(from: productFuture, withDeveloper: developerResponseF, withPlatforms: platformsFuture)
       }

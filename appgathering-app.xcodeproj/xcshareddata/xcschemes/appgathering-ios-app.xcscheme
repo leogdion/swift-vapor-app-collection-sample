@@ -53,7 +53,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "DEFAULT_SERVER"
-            value = "http://45d40632.ngrok.io"
+            value = "http://fa1804f5.ngrok.io"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

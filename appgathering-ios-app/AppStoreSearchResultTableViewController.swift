@@ -139,25 +139,6 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     return (try? result?.get())?.count ?? 0
   }
 
-  func loadArtwork(fromUrl artworkURL: URL, forCellAtIndexPath indexPath: IndexPath) {
-    DispatchQueue.global().async {
-      guard let searchResultCell = self.tableView.cellForRow(at: indexPath) as? AppStoreSearchResultTableViewCell else {
-        return
-      }
-      guard let data = try? Data(contentsOf: artworkURL) else {
-        return
-      }
-
-      guard let image = UIImage(data: data) else {
-        return
-      }
-
-      DispatchQueue.main.async {
-        searchResultCell.artworkView.image = image
-      }
-    }
-  }
-
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
@@ -177,7 +158,6 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
         searchResultCell.artworkView.image = UIImage(data: data)
       }
     }
-    // loadArtwork(fromUrl: item.artworkUrl512, forCellAtIndexPath: indexPath)
 
     searchResultCell.nameLabel.text = item.trackName
     searchResultCell.subtitleLabel.text = "by \(item.sellerName)"
@@ -197,7 +177,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       try? RequestBuilder.shared.request(withPath: "/iTunesProducts/\(searchItem.trackId)", andMethod: "POST") else {
       return
     }
-
+    searchDisplayController?.isActive = false
     busyView.isHidden = false
     URLSession.shared.dataTask(with: request) { _, _, error in
       guard error == nil else {
@@ -224,70 +204,11 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
 
     let storeController = SKStoreProductViewController()
     storeController.delegate = self
-    storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: searchItem.trackId]) { loaded, error in
-      debugPrint(error)
-      if loaded {
-        self.present(storeController, animated: true, completion: nil)
-      }
-    }
-  }
-
-  func openAppStoreContextual(_: UIContextualAction, view: UIView, _ completed: @escaping (Bool) -> Void) {
-    guard let cell = view as? UITableViewCell else {
-      return completed(false)
-    }
-    guard let indexPath = self.tableView.indexPath(for: cell) else {
-      return completed(false)
-    }
-
-    guard let searchItem = (try? result?.get())?[indexPath.row] else {
-      return completed(false)
-    }
-
-    let storeController = SKStoreProductViewController()
-    storeController.delegate = self
     storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: searchItem.trackId]) { loaded, _ in
       if loaded {
         self.present(storeController, animated: true, completion: nil)
       }
-      completed(loaded)
     }
-  }
-
-  func addContextual(_: UIContextualAction, _: UIView, completed: @escaping (Bool) -> Void) {
-    guard let cell = view as? UITableViewCell else {
-      return completed(false)
-    }
-    guard let indexPath = self.tableView.indexPath(for: cell) else {
-      return completed(false)
-    }
-
-    guard let searchItem = (try? result?.get())?[indexPath.row] else {
-      completed(false)
-      return
-    }
-    guard let request =
-      try? RequestBuilder.shared.request(withPath: "/iTunesProducts/\(searchItem.trackId)", andMethod: "POST") else {
-      completed(false)
-      return
-    }
-
-    busyView.isHidden = false
-    URLSession.shared.dataTask(with: request) { _, _, error in
-      guard error == nil else {
-        completed(false)
-        return
-      }
-
-      DispatchQueue.main.async {
-        self.tableView.deselectRow(at: indexPath, animated: true)
-        self.busyView.isHidden = true
-      }
-
-      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
-
-      completed(true)
-    }.resume()
   }
 
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -309,14 +230,18 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       }))
     }
 
-    alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
+    #if !targetEnvironment(simulator)
+      alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
+    #endif
 
     alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {
       _ in
       self.tableView.deselectRow(at: indexPath, animated: true)
     }))
 
-    present(alertController, animated: true, completion: nil)
+    present(alertController, animated: true, completion: {
+      self.searchDisplayController?.isActive = false
+    })
   }
 
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
@@ -326,25 +251,6 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
   func configureTabItem(_ tabItem: UITabBarItem) {
     tabItem.title = "Search"
     tabItem.image = UIImage(systemName: "magnifyingglass")
-  }
-
-  override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    guard let searchItem = (try? result?.get())?[indexPath.row] else {
-      return nil
-    }
-    var actions = [UIContextualAction]()
-
-    actions.append(UIContextualAction(style: .destructive, title: "Add", handler: addContextual))
-
-    if let url = searchItem.sellerUrl {
-      actions.append(UIContextualAction(style: .normal, title: "Web", handler: { _, _, _ in
-        UIApplication.shared.open(url, options: [UIApplication.OpenExternalURLOptionsKey: Any](), completionHandler: nil)
-      }))
-    }
-
-    actions.append(UIContextualAction(style: .normal, title: "App Store", handler: openAppStoreContextual))
-
-    return UISwipeActionsConfiguration(actions: actions)
   }
 
   func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
