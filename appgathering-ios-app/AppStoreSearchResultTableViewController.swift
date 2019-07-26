@@ -74,6 +74,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
     activityIndicatorView.centerXAnchor.constraint(equalTo: busyView.centerXAnchor).isActive = true
     activityIndicatorView.centerYAnchor.constraint(equalTo: busyView.centerYAnchor).isActive = true
     view.addSubview(busyView)
+    busyView.isHidden = true
     self.busyView = busyView
     let searchController = UISearchController(searchResultsController: nil)
     searchController.searchResultsUpdater = self
@@ -177,19 +178,19 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       try? RequestBuilder.shared.request(withPath: "/iTunesProducts/\(searchItem.trackId)", andMethod: "POST") else {
       return
     }
-    searchDisplayController?.isActive = false
+    navigationItem.searchController?.isActive = false
     busyView.isHidden = false
     URLSession.shared.dataTask(with: request) { _, _, error in
       guard error == nil else {
         return
       }
 
+      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
+      
       DispatchQueue.main.async {
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.busyView.isHidden = true
       }
-
-      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
     }.resume()
   }
 
@@ -239,9 +240,7 @@ class AppStoreSearchResultTableViewController: UITableViewController, UISearchRe
       self.tableView.deselectRow(at: indexPath, animated: true)
     }))
 
-    present(alertController, animated: true, completion: {
-      self.searchDisplayController?.isActive = false
-    })
+    present(alertController, animated: true, completion: nil)
   }
 
   override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {

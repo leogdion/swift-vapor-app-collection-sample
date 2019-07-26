@@ -24,6 +24,7 @@ public func routes(_ router: Router) throws {
   router.post("iTunesProducts", Int.parameter, use: apswProductController.create)
 
   router.get("products", use: productController.list)
+  router.delete("products", UUID.parameter, use: productController.delete)
   //    let todoController = ProductController()
   //    router.get("todos", use: todoController.index)
   //    router.post("todos", use: todoController.create)

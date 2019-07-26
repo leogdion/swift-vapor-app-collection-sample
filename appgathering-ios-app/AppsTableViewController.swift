@@ -5,6 +5,7 @@
 //  Created by Leo Dion on 7/24/19.
 //
 
+import StoreKit
 import UIKit
 
 extension JSONDecoder {
@@ -27,7 +28,7 @@ extension JSONDecoder {
   }
 }
 
-class AppsTableViewController: UITableViewController, TabItemable {
+class AppsTableViewController: UITableViewController, TabItemable, SKStoreProductViewControllerDelegate {
   var loaded = false
   let jsonDecoder = JSONDecoder()
   var observer: NSObjectProtocol?
@@ -129,6 +130,28 @@ class AppsTableViewController: UITableViewController, TabItemable {
     return searchResultCell
   }
 
+  func openAppStore(_: UIAlertAction) {
+    guard let indexPath = self.tableView.indexPathForSelectedRow else {
+      return
+    }
+
+    guard let product = (try? result?.get())?[indexPath.row] else {
+      return
+    }
+
+    guard let trackId = product.appleSoftware?.trackId else {
+      return
+    }
+
+    let storeController = SKStoreProductViewController()
+    storeController.delegate = self
+    storeController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier: trackId]) { loaded, _ in
+      if loaded {
+        self.present(storeController, animated: true, completion: nil)
+      }
+    }
+  }
+
   func removeAction(_: UIAlertAction) {
     guard let indexPath = self.tableView.indexPathForSelectedRow else {
       return
@@ -152,7 +175,7 @@ class AppsTableViewController: UITableViewController, TabItemable {
         self.busyView.isHidden = true
       }
 
-      // NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
+      NotificationCenter.default.post(name: NSNotification.Name(rawValue: "AppCollectionUpdated"), object: nil)
     }.resume()
   }
 
@@ -198,11 +221,18 @@ class AppsTableViewController: UITableViewController, TabItemable {
     tabBarItem.image = UIImage(systemName: "app.badge.fill")
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  deinit {
     if let observer = self.observer {
       NotificationCenter.default.removeObserver(observer)
     }
     observer = nil
-    super.viewWillDisappear(animated)
+  }
+
+  func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+    viewController.dismiss(animated: true) {
+      if let indexPath = self.tableView.indexPathForSelectedRow {
+        self.tableView.deselectRow(at: indexPath, animated: true)
+      }
+    }
   }
 }

@@ -35,4 +35,22 @@ final class ProductController {
       try products.map { try ProductResponse.future(from: $0, on: req) }.flatten(on: req)
     }
   }
+  
+  func delete(_ req: Request) throws -> Future<HTTPStatus> {
+    let userF = try req.user()
+    
+    let productId = try req.parameters.next(UUID.self)
+    
+    let productF = Product.find(productId, on: req).unwrap(or: Abort(HTTPStatus.notFound))
+    
+    return userF.and(productF).flatMap { (user, product) -> EventLoopFuture<Void> in
+      user.products.isAttached(product, on: req).flatMap { (isAttached) in
+        guard isAttached else {
+          throw Abort(HTTPStatus.notFound)
+        }
+        return user.products.detach(product, on: req)
+      }
+    }.transform(to: HTTPStatus.ok)
+    
+  }
 }
