@@ -8,6 +8,9 @@
 import Vapor
 
 extension Request {
+  /**
+   Fake authentication which gets the user based on the User id given as an http header.
+   */
   func user(on connection: DatabaseConnectable? = nil) throws -> Future<User> {
     let connection = connection ?? self
 

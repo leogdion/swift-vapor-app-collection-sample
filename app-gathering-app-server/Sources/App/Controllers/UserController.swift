@@ -9,7 +9,9 @@ import FluentPostgreSQL
 import Vapor
 
 final class UserController {
-  /// Returns a list of all `Todo`s.
+  /**
+   Returns the user based on the id or name in the parameters.
+   */
   func get(_ req: Request) throws -> Future<User> {
     let userNameOrId = try req.parameters.next(String.self)
     let userFound: EventLoopFuture<User?>
@@ -27,7 +29,9 @@ final class UserController {
     }
   }
 
-  /// Saves a decoded `Todo` to the database.
+  /**
+   Signs the user up based on the SignupRequest.
+   */
   func create(_ req: Request) throws -> Future<UserResponse> {
     return try req.content.decode(SignupRequest.self).flatMap { signup in
       User(name: signup.name).save(on: req)

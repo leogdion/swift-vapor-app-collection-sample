@@ -57,6 +57,7 @@ struct RequestBuilder: RequestBuilderProtocol {
     urlRequest.httpMethod = httpMethod
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
+    // set the X-User-Id for a simpistic non-secure way of doing authentication
     if let userId = self.userId {
       urlRequest.addValue(userId.uuidString, forHTTPHeaderField: "X-User-Id")
     }

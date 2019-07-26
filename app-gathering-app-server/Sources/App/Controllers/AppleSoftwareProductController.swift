@@ -168,7 +168,7 @@ final class AppleSoftwareProductController {
       }.flatten(on: req)
 
       // create or update the developer
-      let developerFuture = self.developer(basedOnProduct: resultItem, on: req)
+      let developerFuture = self.developer(upsertBasedOn: resultItem, on: req)
 
       // create or update the product
       let productFuture = developerFuture.flatMap { developerPair in

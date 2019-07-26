@@ -16,15 +16,25 @@ struct ProductResponse: Codable {
 
 #if os(Linux) || os(macOS)
   extension ProductResponse: Content {
+    /**
+     Creates a Future ProductResponse  based on a Product.
+     */
     static func future(from product: Product, on connection: DatabaseConnectable) throws -> Future<ProductResponse> {
       let productId = try product.requireID()
+
+      // find the iTunes product metadata
       let appleSoftwareProductF = try product.appleSoftware.query(on: connection).first()
+
+      // find the (required) developer info
       let developerF = product.developer.query(on: connection).first().unwrap(or: Abort(HTTPResponseStatus.internalServerError))
 
+      // find the list of platforms
       let platformNamesF = try product.platforms.query(on: connection).all().map { $0.map { $0.name } }
 
+      // find the iTunes developer metadata
       let appleSoftwareDeveloperF = developerF.flatMap { try $0.appleSoftware.query(on: connection).first() }
 
+      // from the resulting info, create the ProductResponse
       return developerF.and(appleSoftwareProductF.and(appleSoftwareDeveloperF)).and(platformNamesF).map { components in
         let ((developer, (appleSoftwareProduct, appleSoftwareDeveloper)), platformNames) = components
 
@@ -47,6 +57,9 @@ struct ProductResponse: Codable {
       }
     }
 
+    /**
+     Creates a Future ProductResponse  based on a set of Future info.
+     */
     static func future(
       from productPair: Future<(Product, AppleSoftwareProduct)>,
       withDeveloper developerResponseF: Future<DeveloperResponse>,

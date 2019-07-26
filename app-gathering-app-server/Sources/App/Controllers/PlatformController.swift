@@ -10,6 +10,9 @@ import Foundation
 import Vapor
 
 final class PlatformController {
+  /**
+   Parses the iTunes device name and adds it to the database.
+   */
   func platform(upsertBasedOnDeviceName apswDeviceName: String, on database: DatabaseConnectable) -> Future<Platform> {
     let deviceNames = Set<String>(apswDeviceName.components(separatedBy: "-"))
     let deviceName = (deviceNames.count == 1 ? deviceNames.first : apswDeviceName) ?? apswDeviceName

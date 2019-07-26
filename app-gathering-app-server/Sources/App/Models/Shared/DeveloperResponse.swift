@@ -12,6 +12,9 @@ struct DeveloperResponse: Codable {
 
 #if os(Linux) || os(macOS)
   extension DeveloperResponse {
+    /**
+     Creates a Future DeveloperResponse based on a Future Developer and AppleSoftwareDeveloper.
+     */
     static func future(from developerPair: Future<(Developer, AppleSoftwareDeveloper)>) -> Future<DeveloperResponse> {
       return developerPair.map { developer, appleSoftwareDeveloper in
         let apswDeveloperInfo = AppleSoftwareDeveloperInfo(artistId: appleSoftwareDeveloper.artistId)
