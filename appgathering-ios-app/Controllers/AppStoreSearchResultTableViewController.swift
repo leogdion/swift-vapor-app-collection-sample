@@ -211,6 +211,9 @@ class AppStoreSearchResultTableViewController: UITableViewController {
     }.resume()
   }
 
+  /**
+   Displays an action sheet when the user selects a product.
+   */
   override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let searchItem = (try? result?.get())?[indexPath.row] else {
       return
@@ -219,6 +222,7 @@ class AppStoreSearchResultTableViewController: UITableViewController {
     let alertController = UIAlertController(title: searchItem.trackName, message: "What would you like to do?", preferredStyle: .actionSheet)
 
     alertController.addAction(UIAlertAction(title: "Add App", style: .destructive, handler: addAction))
+    // If the app has a web site, allow the user to open the web site url.
 
     if let url = searchItem.sellerUrl {
       alertController.addAction(UIAlertAction(title: "Open Website", style: .default, handler: { _ in
@@ -229,6 +233,7 @@ class AppStoreSearchResultTableViewController: UITableViewController {
     }
 
     #if !targetEnvironment(simulator)
+      // allow the user to open the app store page
       alertController.addAction(UIAlertAction(title: "Open App Store", style: .default, handler: openAppStore))
     #endif
 
@@ -264,14 +269,17 @@ extension AppStoreSearchResultTableViewController: UISearchResultsUpdating {
 
     result = nil
 
+    // create the url for the query
     var urlComponents = AppStoreSearchResultTableViewController.baseURLComponents
 
     urlComponents.queryItems?.append(URLQueryItem(name: "term", value: term))
 
     let url = urlComponents.url!
 
+    // create the data task for the url
     let dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
 
+      // update the results
       self.result = AppsTableViewController.jsonDecoder.decode(AppleSearchResult.self,
                                                                from: data,
                                                                withResponse: response,
