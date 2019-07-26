@@ -26,6 +26,8 @@
 		B38F0F6B22E90661008E3D0A /* ProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6722E90661008E3D0A /* ProductResponse.swift */; };
 		B38F0F6C22E90661008E3D0A /* DeveloperResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */; };
 		B38F0F6D22E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */; };
+		B3C7274D22EB791C004F150C /* SignupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274B22EB791C004F150C /* SignupRequest.swift */; };
+		B3C7274E22EB791C004F150C /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274C22EB791C004F150C /* UserResponse.swift */; };
 		OBJ_1000 /* PlatformController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* PlatformController.swift */; };
 		OBJ_1001 /* ProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ProductController.swift */; };
 		OBJ_1002 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* UserController.swift */; };
@@ -5262,6 +5264,8 @@
 		B38F0F6722E90661008E3D0A /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
 		B38F0F6822E90661008E3D0A /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperResponse.swift; sourceTree = "<group>"; };
 		B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareDeveloperInfo.swift; sourceTree = "<group>"; };
+		B3C7274B22EB791C004F150C /* SignupRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignupRequest.swift; path = "../../../../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/Shared/SignupRequest.swift"; sourceTree = "<group>"; };
+		B3C7274C22EB791C004F150C /* UserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserResponse.swift; path = "../../../../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/app-gathering-app-server/Sources/App/Models/Shared/UserResponse.swift"; sourceTree = "<group>"; };
 		"Console::Command::Product" /* Command.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Command.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Console::Console::Product" /* Console.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Console.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Console::Logging::Product" /* Logging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Logging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6959,6 +6963,8 @@
 		B3C7272622EB6627004F150C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B3C7274B22EB791C004F150C /* SignupRequest.swift */,
+				B3C7274C22EB791C004F150C /* UserResponse.swift */,
 				OBJ_15 /* AppleSearchResult.swift */,
 				OBJ_16 /* AppleSearchResultItem.swift */,
 				B38F0F6922E90661008E3D0A /* AppleSoftwareDeveloperInfo.swift */,
@@ -12276,6 +12282,7 @@
 				OBJ_1004 /* AppleSearchResultItem.swift in Sources */,
 				B338926922EA9C1500BBEEC0 /* Request.swift in Sources */,
 				B38F0F6C22E90661008E3D0A /* DeveloperResponse.swift in Sources */,
+				B3C7274E22EB791C004F150C /* UserResponse.swift in Sources */,
 				OBJ_1005 /* AppleSoftwareDeveloper.swift in Sources */,
 				OBJ_1007 /* AppleSoftwareProduct.swift in Sources */,
 				OBJ_1009 /* Developer.swift in Sources */,
@@ -12287,6 +12294,7 @@
 				OBJ_1017 /* app.swift in Sources */,
 				B38F0F6B22E90661008E3D0A /* ProductResponse.swift in Sources */,
 				OBJ_1018 /* boot.swift in Sources */,
+				B3C7274D22EB791C004F150C /* SignupRequest.swift in Sources */,
 				OBJ_1019 /* configure.swift in Sources */,
 				OBJ_1020 /* routes.swift in Sources */,
 			);

@@ -6,15 +6,6 @@
 //
 import UIKit
 
-struct SignupRequest: Codable {
-  let name: String
-}
-
-struct UserResponse: Codable {
-  let name: String
-  let id: UUID
-}
-
 class LoginViewController: UIViewController {
   @IBOutlet var urlTextField: UITextField!
   @IBOutlet var usernameTextField: UITextField!

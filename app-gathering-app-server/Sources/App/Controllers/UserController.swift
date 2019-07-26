@@ -28,9 +28,11 @@ final class UserController {
   }
 
   /// Saves a decoded `Todo` to the database.
-  func create(_ req: Request) throws -> Future<User> {
-    return try req.content.decode(User.self).flatMap { user in
-      user.save(on: req)
+  func create(_ req: Request) throws -> Future<UserResponse> {
+    return try req.content.decode(SignupRequest.self).flatMap { signup in
+      User(name: signup.name).save(on: req)
+    }.map {
+      try UserResponse(name: $0.name, id: $0.requireID())
     }
   }
 }
