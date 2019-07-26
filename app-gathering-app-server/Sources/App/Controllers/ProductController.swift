@@ -16,15 +16,11 @@ final class ProductController {
     // find the logged in user
     let userF = try req.user()
 
-    // get their list of products
-    let products = userF.flatMap { user -> Future<[Product]> in
-      try user.products.query(on: req).all()
-    }
+    // TODO: get their list of products
 
-    // convert the products into ProductResponse objects
-    return products.flatMap { products in
-      try products.map { try ProductResponse.future(from: $0, on: req) }.flatten(on: req)
-    }
+    // TODO: convert the products into ProductResponse objects
+    
+    throw Abort(.notImplemented)
   }
 
   /**
@@ -34,20 +30,12 @@ final class ProductController {
     // find the logged in user
     let userF = try req.user()
 
-    // get the product id
-    let productId = try req.parameters.next(UUID.self)
+    // TODO: get the product id
 
-    // find the product, throw 404 if the product is not found
-    let productF = Product.find(productId, on: req).unwrap(or: Abort(HTTPStatus.notFound))
+    // TODO: find the product, throw 404 if the product is not found
+    
+    // TODO: throw 404 if the product is not in their list
 
-    return userF.and(productF).flatMap { (user, product) -> EventLoopFuture<Void> in
-      // throw 404 if the product is not in their list
-      user.products.isAttached(product, on: req).flatMap { isAttached in
-        guard isAttached else {
-          throw Abort(HTTPStatus.notFound)
-        }
-        return user.products.detach(product, on: req)
-      }
-    }.transform(to: HTTPStatus.ok)
+    throw Abort(.notImplemented)
   }
 }

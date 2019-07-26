@@ -15,18 +15,17 @@ final class UserController {
   func get(_ req: Request) throws -> Future<User> {
     let userNameOrId = try req.parameters.next(String.self)
     let userFound: EventLoopFuture<User?>
+    
+    // if an id is passed find based on id
     if let id = UUID(uuidString: userNameOrId) {
       userFound = User.find(id, on: req)
     } else {
+      // otherwise find based on username
       userFound = User.query(on: req).filter(\.name == userNameOrId).first()
     }
 
-    return userFound.map { (possibleUser) -> (User) in
-      guard let user = possibleUser else {
-        throw Abort(.notFound)
-      }
-      return user
-    }
+    // if the user if not found, throw 401 error
+    return userFound.unwrap(or: Abort(.unauthorized))
   }
 
   /**
