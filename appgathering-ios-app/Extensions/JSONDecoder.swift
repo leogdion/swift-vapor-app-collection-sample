@@ -7,22 +7,6 @@
 
 import Foundation
 
-struct NotImplmentedError: LocalizedError {
-  var errorDescription: String? {
-    return "This API call has not been implemented yet."
-  }
-}
-
-extension URLResponse {
-  var isNotImplemented: Bool {
-    guard let httpResponse = self as? HTTPURLResponse else {
-      return false
-    }
-
-    return httpResponse.statusCode == 501
-  }
-}
-
 extension JSONDecoder {
   /**
    Decode the result of a  data task into a Decodable object.

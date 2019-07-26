@@ -29,6 +29,10 @@
 		B3C7273A22EB670B004F150C /* AppleSoftwareProductInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */; };
 		B3C7273B22EB670B004F150C /* AppleSearchResultItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */; };
 		B3C7273C22EB670B004F150C /* AppleSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273622EB670B004F150C /* AppleSearchResult.swift */; };
+		B3C7274022EB715C004F150C /* NotImplmentedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7273F22EB715C004F150C /* NotImplmentedError.swift */; };
+		B3C7274222EB7173004F150C /* URLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274122EB7173004F150C /* URLResponse.swift */; };
+		B3C7274422EB71AF004F150C /* TabItemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274322EB71AF004F150C /* TabItemable.swift */; };
+		B3C7274622EB71C1004F150C /* UITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C7274522EB71C1004F150C /* UITabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +61,10 @@
 		B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareProductInfo.swift; sourceTree = "<group>"; };
 		B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResultItem.swift; sourceTree = "<group>"; };
 		B3C7273622EB670B004F150C /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResult.swift; sourceTree = "<group>"; };
+		B3C7273F22EB715C004F150C /* NotImplmentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotImplmentedError.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Models/NotImplmentedError.swift"; sourceTree = "<group>"; };
+		B3C7274122EB7173004F150C /* URLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLResponse.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/URLResponse.swift"; sourceTree = "<group>"; };
+		B3C7274322EB71AF004F150C /* TabItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabItemable.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Views/TabItemable.swift"; sourceTree = "<group>"; };
+		B3C7274522EB71C1004F150C /* UITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITabBarController.swift; path = "../../../../../../../System/Volumes/Data/Users/leo/Documents/Projects/leogdion-vapor/appgathering-ios-app/Extensions/UITabBarController.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +110,8 @@
 			children = (
 				B3C7271B22EB5C69004F150C /* JSONDecoder.swift */,
 				B3C7271F22EB6316004F150C /* UIView.swift */,
+				B3C7274122EB7173004F150C /* URLResponse.swift */,
+				B3C7274522EB71C1004F150C /* UITabBarController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -112,6 +122,7 @@
 				B3C7273022EB670B004F150C /* Shared */,
 				B3C7272C22EB6690004F150C /* NotificationNames.swift */,
 				B336088E22DD696B00ADEEFF /* NoDataError.swift */,
+				B3C7273F22EB715C004F150C /* NotImplmentedError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -136,6 +147,7 @@
 				B310235922DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift */,
 				B310235A22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.xib */,
 				B3319E7F22DE3A5700A4B0D1 /* LoginViewController.xib */,
+				B3C7274322EB71AF004F150C /* TabItemable.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -283,10 +295,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3C7273C22EB670B004F150C /* AppleSearchResult.swift in Sources */,
+				B3C7274222EB7173004F150C /* URLResponse.swift in Sources */,
+				B3C7274422EB71AF004F150C /* TabItemable.swift in Sources */,
 				B3C7272022EB6316004F150C /* UIView.swift in Sources */,
 				B38F0F8D22E9DBE7008E3D0A /* AppsTableViewController.swift in Sources */,
 				B3C7273A22EB670B004F150C /* AppleSoftwareProductInfo.swift in Sources */,
 				B3C7272D22EB6690004F150C /* NotificationNames.swift in Sources */,
+				B3C7274622EB71C1004F150C /* UITabBarController.swift in Sources */,
 				B310235B22DD0EA400B56685 /* AppStoreSearchResultTableViewCell.swift in Sources */,
 				B310234622DCF68900B56685 /* AppStoreSearchResultTableViewController.swift in Sources */,
 				B310234222DCF68900B56685 /* AppDelegate.swift in Sources */,
@@ -299,6 +314,7 @@
 				B3C7271C22EB5C69004F150C /* JSONDecoder.swift in Sources */,
 				B3319E8022DE3A5700A4B0D1 /* LoginViewController.swift in Sources */,
 				B310234422DCF68900B56685 /* SceneDelegate.swift in Sources */,
+				B3C7274022EB715C004F150C /* NotImplmentedError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

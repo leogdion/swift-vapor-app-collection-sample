@@ -8,25 +8,6 @@
 import StoreKit
 import UIKit
 
-protocol TabItemable {
-  func configureTabItem(_ tabItem: UITabBarItem)
-}
-
-extension UITabBarController {
-  convenience init(navigationRootViewControllers: [UIViewController], animated: Bool = false) {
-    self.init()
-
-    let viewControllers = navigationRootViewControllers.map { rootViewController -> UIViewController in
-      let viewController = UINavigationController(rootViewController: rootViewController)
-      if let tabItemable = rootViewController as? TabItemable {
-        tabItemable.configureTabItem(viewController.tabBarItem)
-      }
-      return viewController
-    }
-    setViewControllers(viewControllers, animated: animated)
-  }
-}
-
 class AppStoreSearchResultTableViewController: UITableViewController, UISearchResultsUpdating, TabItemable, SKStoreProductViewControllerDelegate {
   let reuseIdentifier = "reuseIdentifier"
   weak var alertController: UIAlertController?
