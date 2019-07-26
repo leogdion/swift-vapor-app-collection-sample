@@ -127,3 +127,5 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.gitignore.io/api/xcode,swift,macos
+
+ app-gathering-app-server/app-gathering-app-server.xcodeproj
