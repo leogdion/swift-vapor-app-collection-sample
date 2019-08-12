@@ -1,9 +1,27 @@
+// Copyright (c) 2019 Razeware LLC
 //
-//  File.swift
-//
-//
-//  Created by Leo Dion on 7/17/19.
-//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the  Software), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
+// distribute, sublicense, create a derivative work, and/or sell copies of the
+// Software in any work that is designed, intended, or marketed for pedagogical or
+// instructional purposes related to programming, coding, application development,
+// or information technology.  Permission for such use, copying, modification,
+// merger, publication, distribution, sublicensing, creation of derivative works,
+// or sale is expressly withheld.
+// THE SOFTWARE IS PROVIDED  AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 import FluentPostgreSQL
 import Vapor
@@ -76,8 +94,7 @@ final class AppleSoftwareProductController {
    */
   func product(
     upsertBasedOn resultItem: AppleSearchResultItem,
-    withiTunesArtist _: AppleSoftwareDeveloper,
-    andDeveloper developer: Developer,
+    withDeveloper developer: Developer,
     on req: DatabaseConnectable
   ) throws -> Future<(Product, AppleSoftwareProduct)> {
     return AppleSoftwareProduct.query(on: req).filter(\.trackId == resultItem.trackId).first().flatMap { foundApswProduct in
@@ -95,7 +112,7 @@ final class AppleSoftwareProductController {
           return product.update(on: req)
         }
       } else {
-        // create the new prouct
+        // create the new product
         productFuture = Product(
           developerId: try developer.requireID(),
           name: resultItem.trackName,
@@ -127,7 +144,7 @@ final class AppleSoftwareProductController {
         let deletingProductPlatforms = try currentProdPlat.filter { (productPlatform) -> Bool in
           try !(platformsFuture.contains { (try $0.requireID()) == productPlatform.platformId })
         }
-        // find all the new platforms which should be attatched to the product
+        // find all the new platforms which should be attached to the product
         let savingProductPlatforms = try platformsFuture.filter { (platform) -> Bool in
           try !(currentProdPlat.contains { $0.platformId == (try platform.requireID()) })
         }.map { platform in
@@ -172,7 +189,7 @@ final class AppleSoftwareProductController {
 
       // create or update the product
       let productFuture = developerFuture.flatMap { developerPair in
-        try self.product(upsertBasedOn: resultItem, withiTunesArtist: developerPair.1, andDeveloper: developerPair.0, on: req)
+        try self.product(upsertBasedOn: resultItem, withDeveloper: developerPair.0, on: req)
       }
 
       // create or update the product's platforms
@@ -184,8 +201,7 @@ final class AppleSoftwareProductController {
       let developerResponseF = DeveloperResponse.future(from: developerFuture)
       return userF.and(productFuture).flatMap { userAndProduct -> Future<Void> in
         // attach the user to the product
-        let user = userAndProduct.0
-        let product = userAndProduct.1.0
+        let (user, (product, _)) = userAndProduct
         return user.products.isAttached(product, on: req).flatMap { (isAttached) -> Future<Void> in
           guard !isAttached else {
             return req.future()
