@@ -53,7 +53,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "DEFAULT_SERVER"
-            value = "http://7d0ef571.ngrok.io"
+            value = "http://localhost:8080"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

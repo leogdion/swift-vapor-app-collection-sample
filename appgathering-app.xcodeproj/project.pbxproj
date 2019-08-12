@@ -54,8 +54,8 @@
 		B339F18C22E9E62900892F55 /* appgathering-ios-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "appgathering-ios-app.entitlements"; sourceTree = "<group>"; };
 		B38F0F8A22E9DBC2008E3D0A /* RequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		B38F0F8C22E9DBE7008E3D0A /* AppsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsTableViewController.swift; sourceTree = "<group>"; };
-		B3C7271B22EB5C69004F150C /* JSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONDecoder.swift; path = "JSONDecoder.swift"; sourceTree = "<group>"; };
-		B3C7271F22EB6316004F150C /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIView.swift; path = "UIView.swift"; sourceTree = "<group>"; };
+		B3C7271B22EB5C69004F150C /* JSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoder.swift; sourceTree = "<group>"; };
+		B3C7271F22EB6316004F150C /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B3C7272C22EB6690004F150C /* NotificationNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		B3C7273122EB670B004F150C /* DeveloperResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperResponse.swift; sourceTree = "<group>"; };
 		B3C7273222EB670B004F150C /* ProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductResponse.swift; sourceTree = "<group>"; };
@@ -63,10 +63,10 @@
 		B3C7273422EB670B004F150C /* AppleSoftwareProductInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSoftwareProductInfo.swift; sourceTree = "<group>"; };
 		B3C7273522EB670B004F150C /* AppleSearchResultItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResultItem.swift; sourceTree = "<group>"; };
 		B3C7273622EB670B004F150C /* AppleSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleSearchResult.swift; sourceTree = "<group>"; };
-		B3C7273F22EB715C004F150C /* NotImplmentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotImplmentedError.swift; path = "NotImplmentedError.swift"; sourceTree = "<group>"; };
-		B3C7274122EB7173004F150C /* URLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = URLResponse.swift; path = "URLResponse.swift"; sourceTree = "<group>"; };
-		B3C7274322EB71AF004F150C /* TabItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabItemable.swift; path = "TabItemable.swift"; sourceTree = "<group>"; };
-		B3C7274522EB71C1004F150C /* UITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UITabBarController.swift; path = "UITabBarController.swift"; sourceTree = "<group>"; };
+		B3C7273F22EB715C004F150C /* NotImplmentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotImplmentedError.swift; sourceTree = "<group>"; };
+		B3C7274122EB7173004F150C /* URLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLResponse.swift; sourceTree = "<group>"; };
+		B3C7274322EB71AF004F150C /* TabItemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemable.swift; sourceTree = "<group>"; };
+		B3C7274522EB71C1004F150C /* UITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarController.swift; sourceTree = "<group>"; };
 		B3C7274722EB78F5004F150C /* SignupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupRequest.swift; sourceTree = "<group>"; };
 		B3C7274922EB7908004F150C /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -192,8 +192,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B310235022DCF68D00B56685 /* Build configuration list for PBXNativeTarget "appgathering-ios-app" */;
 			buildPhases = (
-				B315055722E08ACD006FC881 /* swiftformat */,
-				B315055422E08962006FC881 /* swiftlint */,
 				B310233B22DCF68900B56685 /* Sources */,
 				B310233C22DCF68900B56685 /* Frameworks */,
 				B310233D22DCF68900B56685 /* Resources */,
@@ -255,45 +253,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		B315055422E08962006FC881 /* swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = swiftlint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		B315055722E08ACD006FC881 /* swiftformat */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = swiftformat;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat appgathering-ios-app --swiftversion 5\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B310233B22DCF68900B56685 /* Sources */ = {
